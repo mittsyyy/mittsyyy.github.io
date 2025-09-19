@@ -1,0 +1,64 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+body{
+    font-family: "Bricolage Grotesque", sans-serif;
+}
+button{
+    font-weight: bold;
+    border-radius: 15px;
+    height: 40px;
+    padding-top: 10px;
+    width: 110px;
+    padding-bottom: 20px;
+    border: none;
+    color: white;
+    background: rgb(204, 139, 241);
+    text-transform: uppercase;
+    box-shadow: 5px 5px rgba(131, 65, 168, 0.411);
+
+}
+section#home{   
+    height: 100vh;
+    background: #ceabf5;
+    background: linear-gradient(90deg, rgb(201, 160, 248) 0%, rgba(180, 105, 255, 1) 48%, rgba(194, 115, 250, 1) 100%);
+    padding-left: 50px; 
+    padding-right: 50px;
+
+
+}
+section#home header{
+    display: flex;
+    justify-content: space-between;
+    padding-top: 30px;
+}
+section#home header div h1{
+    color: white;;
+}
+section#home header nav ul{
+    display: flex;
+    gap: 10px;
+    margin-top: 13px ;
+}
+section#home header nav ul li{
+    list-style: none;
+}
+section#home header nav ul li a{
+    color: white;
+    text-decoration: none;
+    font-size: 1.1rem;
+}
+section#home #content{
+    display: flex;
+    color: white;
+}
+section#home #content div{
+    flex: 1;
+}
+section#home #content h2{
+    width: 80%;
+    font-size: 4rem;
+    color: white;
+    margin-top: 40px;
+}
