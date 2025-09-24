@@ -4,6 +4,7 @@
 }
 body{
     font-family: "Bricolage Grotesque", sans-serif;
+    background-color: rgb(27, 135, 143, 1);
 }
 button{
     font-weight: bold;
@@ -22,7 +23,7 @@ button{
 section#home{   
     height: 100vh;
     background: #0d232b;
-background: linear-gradient(90deg, #0d232b 0%, rgba(27, 135, 143, 1) 50%, rgba(24, 238, 242, 1) 100%);
+    background: linear-gradient(90deg, #0d232b 0%, rgba(27, 135, 143, 1) 50%, rgba(24, 238, 242, 1) 100%);
     padding-left: 50px; 
     padding-right: 50px;
 
@@ -91,4 +92,71 @@ section#home #content h2{
     width: 350px;
     border: 1px solid white;
     box-shadow: 0 0 100px #324850;
+}
+.cinta{
+    background-color: #ffc107;
+    color: #000;
+    font-weight: bold;
+    font-size: 1.2rem;
+    padding: 10px 0;
+    width: 100%;
+    display: flex;
+    justify-content: center
+    left -25%;
+    transform: rotate(-3deg);
+    z-index: 10;
+    margin-top: -20px;
+}
+section#habilidades{
+    background: #0D232B;
+    background: linear-gradient(90deg, rgba(13, 35, 43, 1) 0%, rgba(57, 176, 179, 1) 53%, rgba(40, 200, 212, 1) 100%);
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+}
+#img2{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#img2 img{
+    border-radius:50%;
+    height: 450px;
+    width: 450px;
+    border: 1px solid white;
+    box-shadow: 0 0 100px #324850;
+}
+section#habilidades #AboutMe{
+    height: 100vh;
+    color: white;
+    justify-content: center;
+}
+section#habilidades #AboutMe #contenido h2{
+    width: 50%;
+    font-size: 2rem;
+    color: white;
+    margin-top: 100px
+}
+.cuadrito{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px,1fr));
+    gap: 20px;
+    max-width: 800px;
+    margin-top: 20px;
+}
+.cuadrito2{
+    background-color: #17313b65;
+    padding: 15px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.cuadrito2 span{
+    font-weight: bold;
+}
+.cuadrito2 .porcentaje{
+    color: #ffffff;
 }
