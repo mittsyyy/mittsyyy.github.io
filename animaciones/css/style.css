@@ -1,0 +1,71 @@
+*{
+    margin: 0px;
+    padding: 0px;
+}
+body{
+    position: relative;
+    background-image: url('../img/bg.jpg');
+    background-size: cover;
+    width: 100vh;
+    height: 100vh;
+}
+#personaje{
+    width: 200px;
+    position: absolute;
+    top: 110px;
+    left: 120px;
+    animation-name: saltos;
+    animation-duration:10s ;
+}
+#barril{
+    position: relative;
+    top: 450px;
+    left: 120px;
+    width: 200px;
+}
+#barril2{
+    position: relative;
+    top: 450px;
+    left: 900px;
+    width: 200px;
+    
+}
+.giroBarril{
+    animation-name: rotarBarril;
+    animation-duration: 3s;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+@keyframes rotarBarril{
+    from {
+        transform: rotate(-80deg);
+    }
+    to {
+        transform: rotate(80deg);
+    }
+}
+@keyframes saltos{
+    0%{
+        top: -220px;
+    }
+    20%{
+        top: 110px;
+    }
+    40%{
+        top: 110px;
+    }
+    60%{
+        left: 700px;
+        top: 270px;
+        opacity: 1;
+    }
+    80%{
+        top: 450px;
+        left: 120px;
+        opacity: 0;
+    }
+    100%{
+        top: -220px;
+    }
+}
+
