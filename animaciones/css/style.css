@@ -36,6 +36,12 @@ body{
     animation-iteration-count: infinite;
     animation-direction: alternate;
 }
+.saltos{
+    animation-name: rotarBarril;
+    animation-duration: 3s;
+    animation-iteration-count: infinite;
+    animation-direction: reverse;
+}
 @keyframes rotarBarril{
     from {
         transform: rotate(-80deg);
@@ -53,18 +59,28 @@ body{
     }
     40%{
         top: 110px;
+        left: 400px;
     }
     60%{
-        left: 700px;
-        top: 270px;
+        left: 750px;
+        top: 280px;
+        opacity: 1;
+    }
+    70%{
         opacity: 1;
     }
     80%{
         top: 450px;
         left: 120px;
         opacity: 0;
+        transform: rotate(0deg);
+    }
+    90%{
+        opacity: 1;
+        transform: rotate(-2000deg);
     }
     100%{
+        transform: rotate(1000deg);
         top: -220px;
     }
 }
