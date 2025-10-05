@@ -63,7 +63,7 @@ section#home .nap{
     width: 10px;
 }
 .iconos img{
-    padding-right: 10px;
+    padding-right: 15px;
 }
 .txt1{
     margin-top: 230px;
@@ -82,5 +82,30 @@ section#home .nap{
     width: 130px;
     height: 35px;
     font-size: .8rem;
-}   
+    border: none;
+} 
+section#stock header{
+    font-size: 1rem;
+}  
+.producto {
+    width: 300px;
+    height: 200px;
+}
+.info-producto h4 {
+    font-size: 1em;
+}
+.info-producto h5{
+    font-size: .8rem;
+    margin-top: 15px;
+}
+.info-producto .precio {
+    font-size: 1em;
+}
+.añadir {
+    font-size: 1.5rem;
+    width: 30px;
+    height: 30px;
+    margin-left: 230px;
+    margin-top: -80px;
+}
 }

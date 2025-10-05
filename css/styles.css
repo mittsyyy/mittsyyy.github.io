@@ -2,6 +2,8 @@
     --bg: #12313D;
     --rd: 30px;
     --bg-btn: #CF352B;
+    --deg: rgba(0, 0, 0, 0.632);
+    --color: #43606B;
 }
 *{
     margin: 0px;
@@ -56,20 +58,21 @@ section#home header div nav ul li a{
     margin-top: 10px;
 }
 .txt1{
-    margin-top: 70px;
+    margin-top: 50px;
     padding-left: 50px;
-    color: white;
+    color: white    ;
     font-size: 5.5rem;
 }
 .cuerpo{
     display: flex;
 }
 .cuerpo img{
-    height: 650px;
+    height: 550px;
     position: absolute;
-    left: 400px;
-    top: 100px;
-    width: 1200px;
+    left: 600px;
+    top: 150px;
+    width: 900px;
+    transform: rotate(-20deg);
 }
 .texto{
     width: 600px;
@@ -85,3 +88,89 @@ section#home header div nav ul li a{
     border-radius: var(--rd);
     font-style: bold;
 }
+
+/*-----------------------------------------*/
+/*Productos*/
+section#stock{
+    margin-top: 90px;
+    padding-left: 50px;
+    width: 100vw;
+}
+section#stock header{
+    margin-top: 50px;
+    color: white;
+    font-size: 1.5rem;
+}
+.productos {
+    margin-top: 20px;
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+    align-items: flex-start;
+    width: 100%;
+    gap: 20px; 
+    padding-bottom: 20px;
+}
+.producto {
+    flex-shrink: 0;
+    margin-right: 20px;
+    width: 400px;
+    height: 300px;
+    background-color: var(--color);
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden; 
+    position: relative;
+}
+.producto img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: filter 0.3s ease;
+}
+.info-producto {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 15px;
+  background: var(--deg); 
+  color: white;
+  text-align: left;
+  transform: translateY(100%); 
+  transition: transform 0.4s ease-out; 
+}
+.producto:hover .info-producto {
+transform: translateY(0); 
+}
+.producto:hover img {
+  filter: brightness(0.7); 
+}
+.info-producto h4 {
+    margin-top: 15px;
+    font-size: 1.5em;
+}
+.info-producto h5{
+    font-size: 1rem;
+    margin-top: 15px;
+}
+.info-producto .precio {
+    margin-top: 15px;
+    font-weight: bold;
+    font-size: 1.2em;
+    color: rgb(157, 157, 157);
+}
+.añadir {
+    background-color: var(--bg-btn);
+    font-size: 2rem;
+    color: white;
+    border: none;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    cursor: pointer;
+    margin-top: 0px;
+    margin-left: 300px;
+}
+
