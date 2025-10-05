@@ -9,7 +9,7 @@
 }
 body{
     background-color: var(--bg);
-    font-family: "Exo 2", sans-serif;
+    font-family: "Archivo Black", sans-serif;
 }
 .top{
     display: flex;
@@ -83,4 +83,5 @@ section#home header div nav ul li a{
     font-size: 1.5rem;
     color: white;
     border-radius: var(--rd);
+    font-style: bold;
 }
