@@ -41,9 +41,11 @@ section#home{
 .top{
     margin-top: 20px;
 }
+.nap{
+    margin-left: -30px;
+}
 section#home .nap{
     font-size: .80rem;
-   
 }
 .icon{
     margin-top: 2px;
@@ -57,6 +59,40 @@ section#home .nap{
 .menuu{
    display: none;
 }
+
+  .mobile-menu {
+    display: block;
+    width: 100%;
+    position: sticky; 
+    bottom: 0;
+    top: auto;
+    background-color: rgba(0, 0, 0, 0.632);
+    border-top: 1px solid #ccc; 
+    padding: 10px 0;
+    z-index: 1000; 
+}
+  .mobile-menu ul {
+    display: flex;
+    justify-content: space-around; 
+    align-items: center;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .mobile-menu li {
+    text-align: center;
+    flex-basis: 33.33%; 
+  }
+
+  .mobile-menu a {
+    text-decoration: none;
+    color: white;
+    font-size: 14px;
+    padding: 5px;
+    display: block; 
+  }
+  
+
 .iconos{
     display: flex;
     margin-top: -8px;
@@ -66,12 +102,13 @@ section#home .nap{
     padding-right: 15px;
 }
 .txt1{
-    margin-top: 230px;
+    padding-left: -20px;
+    margin-top: 350px;
     font-size: 2.5rem;
 }
 .cuerpo img{
     height: 200px;
-    top: 60px;
+    top: 150px;
     left: 0px;
     width: 400px;
 }
@@ -85,6 +122,7 @@ section#home .nap{
     border: none;
 } 
 section#stock header{
+    margin-left: -20px ;
     font-size: 1rem;
 }  
 .producto {
@@ -107,5 +145,21 @@ section#stock header{
     height: 30px;
     margin-left: 230px;
     margin-top: -80px;
+}
+.yoss{
+    font-size: 1.5rem;
+    margin-left: -30px;
+}
+.p-yoss button{
+    font-size: 2rem;
+    width: 40px;
+    height: 40px;
+    margin-top: 70px;
+}
+.p-yoss a{
+    margin-top: 20px;
+    color: white;
+    text-decoration: none;
+    font-size: .5rem;
 }
 }
