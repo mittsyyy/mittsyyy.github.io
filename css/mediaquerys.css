@@ -63,7 +63,7 @@ section#home .nap{
   .mobile-menu {
     display: block;
     width: 100%;
-    position: sticky; 
+    position: fixed;
     bottom: 0;
     top: auto;
     background-color: rgba(0, 0, 0, 0.632);
@@ -103,13 +103,13 @@ section#home .nap{
 }
 .txt1{
     padding-left: -20px;
-    margin-top: 350px;
+    margin-top: 250px;
     font-size: 2.5rem;
 }
 .cuerpo img{
-    height: 200px;
-    top: 150px;
-    left: 0px;
+    height: 250px;
+    top: 50px;
+    left: 30px;
     width: 400px;
 }
 .texto{
