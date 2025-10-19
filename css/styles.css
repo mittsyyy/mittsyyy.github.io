@@ -4,12 +4,16 @@
     --bg-btn: #CF352B;
     --deg: rgba(0, 0, 0, 0.632);
     --color: #43606B;
+
+    --product-bg-1: #385764; 
+    --product-bg-2: #5b84a1; 
+
 }
 *{
     margin: 0px;
     padding: 0px;
 }
-body{
+body{   
     background-color: var(--bg);
     font-family: "Archivo Black", sans-serif;
 }
@@ -29,12 +33,6 @@ section#home .nap{
     width: 30px;
     margin: 5px;
 }
-.search{
-    width: 500px;
-    height: 40px;
-    background-color: white;
-    border-radius: var(--rd);
-}
 section#home header nav ul{
     display: flex;
     gap: 10px;
@@ -48,6 +46,10 @@ section#home header div nav ul li a{
     text-decoration: none;
     font-size: 1.1rem;
 }
+.menuu{
+    display: flex;
+    gap: px;
+}
 .menu{
     display: flex;
     gap: 20px;
@@ -57,8 +59,9 @@ section#home header div nav ul li a{
     display: none;
 }
 .iconos{
-    padding-left: 5px;
+    margin-right: 50px;
     margin-top: 10px;
+    gap: 20px;
 }
 .txt1{
     margin-top: 50px;
@@ -70,27 +73,77 @@ section#home header div nav ul li a{
     display: flex;
 }
 .cuerpo img{
-    height: 550px;
     position: absolute;
-    left: 600px;
+    left: 550px;
     top: 150px;
-    width: 900px;
-    
+    width: 800px;
 }
-.texto{
-    width: 600px;
+.text-content {
+    max-width: 500px;
 }
-.cuerpo button{
-    margin-left: 50px;
-    margin-top: 20px;
-    width: 200px;
-    height: 50px;
-    background-color: var(--bg-btn);
-    font-size: 1.5rem;
+
+.text-content h1 {
+    margin-top: 50px;
+    padding-left: 50px;
+    color: white    ;
+    font-size: 4.5rem;
+    line-height: 1.1;
+}
+
+.text-content span {
+    color: var(--bg-btn);
+    font-weight: 4rem;
+}
+
+.text-content p {
+    padding-left: 50px;
+    margin: 20px 0;
+    font-size: 1.2rem;
+    color: #f5f5f5;
+}
+
+.buttons {
+    padding-left: 50px;
+    margin-top: 30px;
+}
+
+.btn {
+    padding: 12px 30px;
+    border-radius: 30px;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.buy {
+    background: white;
+    color: #12313d;
+    margin-right: 10px;
+}
+
+.learn {
+    background: transparent;
+    border: 2px solid white;
     color: white;
-    border-radius: var(--rd);
-    font-style: bold;
 }
+.discount {
+    position: absolute;
+    top: 220px;
+    left: 730px;
+    background: var(--bg-btn);
+    color: white;
+    font-weight: 700;
+    font-size: 2rem;
+    border-radius: 50%;
+    width: 200px;
+    height: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
 
 /*-----------------------------------------*/
 /*Productos*/
@@ -126,6 +179,13 @@ section#stock header{
     overflow: hidden; 
     position: relative;
 }
+section#stock > .productos:nth-child(2) .producto:nth-child(1) { background-color: var(--product-bg-1); }
+section#stock > .productos:nth-child(2) .producto:nth-child(2) { background-color: var(--product-bg-2); }
+section#stock > .productos:nth-child(2) .producto:nth-child(3) { background-color: var(--product-bg-1); }
+section#stock > .productos:nth-child(2) .producto:nth-child(4) { background-color: var(--product-bg-2); }
+section#stock > .productos:nth-child(2) .producto:nth-child(5) { background-color: var(--product-bg-1); }
+section#stock > .productos:nth-child(2) .producto:nth-child(6) { background-color: var(--product-bg-2); }
+
 .producto img {
   width: 100%;
   height: 100%;
@@ -176,28 +236,52 @@ transform: translateY(0);
     margin-top: 0px;
     margin-left: 300px;
 }
+
 .yoss{
     margin-top: 50px;
     color: white;
-    font-size:2.5rem;
+    font-size:2rem;
+    padding-left: 0;
 }
 .p-yoss{
+    flex-shrink: 0;
     width: 400px;
+    height: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--color-gray); 
+    border-radius: 10px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: transform 0.3s ease-in-out;
+}
+.p-yoss:hover {
+    transform: translateY(-8px);
 }
 .p-yoss button{
     background-color: var(--bg-btn);
-    font-size: 4rem;
-    color: white;
+    font-size: 3rem;
+    color: var(--white);
     border: none;
-    width: 90px;
-    height: 90px;
+    width: 70px;
+    height: 70px;
     border-radius: 50%;
     cursor: pointer;
-    margin-top: 80px;
+    margin-top: 0;
+    transition: background-color 0.3s;
+}
+.p-yoss button:hover{
+    background-color: #e64035;
 }
 .p-yoss a{
     margin-top: 20px;
-    color: white;
+    color: var(--white);
     text-decoration: none;
     font-size: 1.1rem;
+    transition: color 0.3s;
+}
+.p-yoss a:hover {
+    color: var(--bg-btn);
 }
