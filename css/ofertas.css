@@ -1,0 +1,215 @@
+:root{
+    --bg: #12313D;
+    --rd: 30px;
+    --bg-btn: #CF352B;
+    --deg: rgba(0, 0, 0, 0.632);
+    --color: #43606B;
+
+    --product-bg-1: #385764; 
+    --product-bg-2: #5b84a1; 
+}
+body {
+    background-color: var(--bg);
+    color: white;
+    margin: 0;
+    padding: 0;
+    font-family: "Archivo Black", sans-serif;
+}
+
+h1 {
+    font-family: "Archivo Black", sans-serif;
+    font-size: 2.5rem;
+    color: white;
+}
+.top-banner {
+    background-color: var(--product-bg-1);
+    color: #fff;
+    text-align: center;
+    padding: 8px 0;
+    font-size: 10px;
+    letter-spacing: 1px;
+    border-bottom: 1px solid #333;
+}
+.main-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 15px;
+}
+
+.logo {
+    font-family: "Irish Grover", system-ui;
+    font-size: 24px;
+    letter-spacing: 3px;
+}
+
+.icons, .menu-icon {
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.icons span {
+    margin-left: 15px;
+}
+.rebajas-hero {
+    padding: 40px 15px;
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.rebajas-hero h1 {
+    font-size: 32px;
+    margin-bottom: 10px;
+}
+
+.rebajas-hero p {
+    color: white;
+    font-size: 14px;
+    line-height: 1.5;
+}
+.filter-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid var(--product-bg-1);
+    border-bottom: 1px solid var(--product-bg-1);
+    color: white;
+    font-size: 12px;
+    text-transform: uppercase;
+    
+}
+.filter-bar > div {
+    padding: 15px 15px;
+    flex-grow: 1;
+    text-align: center;
+    border-right: 1px solid var(--product-bg-1);
+}
+
+.filter-bar > div:last-child {
+    border-right: none;
+    flex-grow: 0.5; 
+}
+
+.view-options a {
+    color: white;
+    text-decoration: none;
+    margin-left: 10px;
+    cursor: pointer;
+}
+/*cambiar en cel*/
+.products-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr; 
+    gap: 15px 10px;
+    padding: 10px 10px;
+}
+.product-card {
+    background-color: var(--product-bg-1);
+    position: relative;
+    text-align: left;
+    padding-bottom: 20px;
+}
+
+.discount-tag {
+    position: absolute;
+    top: 5px;
+    left: 0;
+    background-color: var(--bg-btn); 
+    color: white;
+    padding: 5px 8px;
+    font-size: 10px;
+    font-weight: bold;
+    z-index: 10;
+}
+
+.product-image {
+    width: 300px;
+    height: 300px;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.add-to-cart-btn {
+    position: absolute;
+    top: 50%; 
+    right: 15px;
+    background-color: var(--bg-btn);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    font-size: 20px;
+    line-height: 1;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform: translateY(-50%);
+}
+
+.product-details {
+    padding: 0 5px;
+}
+
+.product-name {
+    font-weight: bold;
+    font-size: 12px;
+    margin: 5px 0 2px 0;
+}
+
+.product-color {
+    color: #aaa;
+    font-size: 12px;
+    margin: 2px 0 8px 0;
+}
+
+.price-current {
+    color: var(--bg-btn);
+    font-weight: 700;
+    font-size: 14px;
+    display: inline-block;
+    margin-right: 5px;
+}
+
+.price-old {
+    color: #888;
+    text-decoration: line-through;
+    font-size: 12px;
+    display: inline-block;
+}
+.color-options {
+    display: flex;
+    margin-top: 10px;
+}
+.color-options img{
+    width: 25px;
+}
+.color-swatch {
+    width: 25px;
+    height: 25px;
+    border: 1px solid var(--product-bg-1);
+    border-radius: 3px;
+    margin-right: 5px;
+    cursor: pointer;
+    background-color: var(--product-bg-2); 
+}
+
+.color-swatch.black {
+    background-color: var(--product-bg-2);
+}
+
+.color-swatch.active {
+    border: 1px solid #fff;
+    outline: 2px solid #fff;
+}
+
+.color-swatch.more {
+    background: none;
+    border: 1px solid #888;
+    color: #888;
+    font-size: 18px;
+    line-height: 20px;
+    text-align: center;
+}
