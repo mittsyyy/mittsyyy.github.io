@@ -38,6 +38,7 @@ h1 {
 }
 
 .logo {
+    padding-left: 50px;
     font-family: "Irish Grover", system-ui;
     font-size: 24px;
     letter-spacing: 3px;
@@ -109,6 +110,7 @@ h1 {
     position: relative;
     text-align: left;
     padding-bottom: 20px;
+    border-radius: 15px;
 }
 
 .discount-tag {
