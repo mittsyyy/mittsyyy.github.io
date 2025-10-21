@@ -148,6 +148,8 @@ section#home .nap{
     width: 90%; 
     margin: 20px auto;
     display: block;
+    max-width: 100%;
+    height: auto;
 }
 .discount {
     position: absolute; 
