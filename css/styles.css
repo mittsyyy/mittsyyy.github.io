@@ -244,6 +244,7 @@ transform: translateY(0);
     padding-left: 0;
 }
 .p-yoss{
+    color: white;
     flex-shrink: 0;
     width: 400px;
     height: 300px;

@@ -81,7 +81,7 @@ section#home .nap{
     position: fixed;
     bottom: 0;
     top: auto;
-    background-color: rgba(0, 0, 0, 0.632);
+    background-color: #385764;
     border-top: 1px solid #ccc; 
     padding: 10px 0;
     z-index: 1000; 
@@ -221,6 +221,16 @@ h1 {
 }
 .icons, .menu-icon {
     font-size: 1rem;
+}
+
+.sidebar {
+    padding-top: 30px;
+}
+.sidebar li a{
+    font-size: .8rem;
+}
+.sidebar li a img{
+    width: 15px;
 }
 .search-icon img{
     width: 20px;
