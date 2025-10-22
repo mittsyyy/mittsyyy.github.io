@@ -28,6 +28,9 @@ section#home header div nav ul li a{
     padding-left: 0;
     margin-top: 20px;
 }
+.productos{
+    width: 90%;
+}
 .cuerpo img {
     position: absolute;
     left: 400px;
@@ -36,12 +39,7 @@ section#home header div nav ul li a{
     max-width: 550px; 
 }
 .discount {
-    position: relative;
-    top: -200px; 
-    left: 130%; 
-    width: 80px;
-    height: 80px;
-    font-size: .7rem;
+   display: none;
 }
 .products-grid {
     grid-template-columns: 1fr 1fr ; 
@@ -71,6 +69,17 @@ section#home .nap{
     margin-right: 30px;
     gap: 20px;
 }
+.bag{
+    width: 20px;
+}
+.search{
+    width: 20px;
+    padding-right: 10px;
+}
+.contact{
+    width: 20px;
+    padding-right: 10px;
+}
 .menuu{
    display: none;
 }
@@ -92,12 +101,12 @@ section#home .nap{
    align-items: center;
    list-style: none;
    margin: 0;
-   padding: 0;
- }
+   padding: 0; 
+}
 .mobile-menu li {
    text-align: center;
    flex-basis: 33.33%; 
- }
+}
 
 .mobile-menu a {
    text-decoration: none;
@@ -105,10 +114,13 @@ section#home .nap{
    font-size: 14px;
    padding: 5px;
    display: block; 
- }
+}
+body{
+    width: 600px;
+}
 .text-content {
-        max-width: 100%;
-        padding: 0 20px;
+    max-width: 100%;
+    padding: 0 20px;
 }
 .text-content h1 {
     margin-top: 30px;
@@ -152,13 +164,7 @@ section#home .nap{
     height: auto;
 }
 .discount {
-    position: absolute; 
-    top: 360px;
-    left: 130px;
-    width: 70px;
-    height: 70px;
-    font-size: .6rem;
-    margin: 10px auto 30px auto;
+    display: none;
 }
 .cuerpo button{
     width: 130px;
@@ -169,6 +175,9 @@ section#stock header{
     margin-left: -20px ;
     font-size: 1rem;
 }  
+.productos{
+    width: 120%;
+}
 .producto {
     width: 300px;
     height: 200px;
@@ -254,7 +263,7 @@ h1 {
     grid-template-columns: 1fr 1fr; 
 }
 .product-card {
-    width: 170px;
+    width: 50%px;
 }
 
 .discount-tag {
@@ -270,8 +279,8 @@ h1 {
 }
 
 .product-image {
-    width: 170px;
-    height: 200px;
+    width: 270px;
+    height: 270px;
     display: block;
     margin-bottom: 10px;
 }

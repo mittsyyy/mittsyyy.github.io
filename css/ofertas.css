@@ -85,21 +85,28 @@ h1 {
 .icons span {
     margin-left: 15px;
 }
+.search-icon{
+    width: 30px;
+    padding-right: 15px;
+}
+.bag-icon{
+    width: 30px;
+}
 .rebajas-hero {
     padding: 40px 15px;
     text-align: center;
-    max-width: 600px;
+    max-width: 800px;
     margin: 0 auto;
 }
 
 .rebajas-hero h1 {
-    font-size: 32px;
+    font-size: 2.5rem;
     margin-bottom: 10px;
 }
 
 .rebajas-hero p {
     color: white;
-    font-size: 14px;
+    font-size: 1.2rem;
     line-height: 1.5;
 }
 .filter-bar {
@@ -111,27 +118,25 @@ h1 {
     color: white;
     font-size: 12px;
     text-transform: uppercase;
-    
 }
 .filter-bar > div {
     padding: 15px 15px;
     flex-grow: 1;
     text-align: center;
     border-right: 1px solid var(--product-bg-1);
+    width: 33.33%;
 }
 
 .filter-bar > div:last-child {
     border-right: none;
     flex-grow: 0.5; 
 }
-
 .view-options a {
     color: white;
     text-decoration: none;
     margin-left: 10px;
     cursor: pointer;
 }
-/*cambiar en cel*/
 .products-grid {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr; 
@@ -153,7 +158,7 @@ h1 {
     background-color: var(--bg-btn); 
     color: white;
     padding: 5px 8px;
-    font-size: 10px;
+    font-size: 1rem;
     font-weight: bold;
     z-index: 10;
 }
@@ -190,20 +195,20 @@ h1 {
 
 .product-name {
     font-weight: bold;
-    font-size: 12px;
+    font-size: 1.3rem;
     margin: 5px 0 2px 0;
 }
 
 .product-color {
     color: #aaa;
-    font-size: 12px;
+    font-size: 1.1rem;
     margin: 2px 0 8px 0;
 }
 
 .price-current {
     color: var(--bg-btn);
     font-weight: 700;
-    font-size: 14px;
+    font-size: 1rem;
     display: inline-block;
     margin-right: 5px;
 }
@@ -211,7 +216,7 @@ h1 {
 .price-old {
     color: #888;
     text-decoration: line-through;
-    font-size: 12px;
+    font-size: 1rem;
     display: inline-block;
 }
 .color-options {

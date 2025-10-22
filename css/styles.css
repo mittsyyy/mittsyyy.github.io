@@ -63,6 +63,17 @@ section#home header div nav ul li a{
     margin-top: 10px;
     gap: 20px;
 }
+.contact{
+    width: 30px;
+    padding-right: 15px;
+}
+.bag{
+    width: 30px;
+}
+.search{
+    width: 30px;
+    padding-right: 20px;
+}
 .txt1{
     margin-top: 50px;
     padding-left: 50px;
@@ -164,7 +175,7 @@ section#stock header{
     overflow-x: auto;
     overflow-y: hidden;
     align-items: flex-start;
-    width: 100%;
+    width: 90%;
     gap: 20px; 
     padding-bottom: 20px;
 }
