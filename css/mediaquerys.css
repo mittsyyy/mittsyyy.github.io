@@ -58,7 +58,7 @@ section#home{
     margin-left: -30px;
 }
 section#home .nap{
-    font-size: 1rem;
+    font-size: 1.2rem;
 }
 .icon{
     display: flex;
@@ -176,7 +176,7 @@ section#stock header{
     font-size: 1rem;
 }  
 .productos{
-    width: 120%;
+    width: 130%;
 }
 .producto {
     width: 300px;
@@ -224,21 +224,21 @@ h1 {
 }
 .top-banner {
     padding: 8px 0;
-    font-size: .5rem;
+    font-size: 1rem;
 }
 .logo {
     padding-left: 70px;
-    font-size: 1rem;
+    font-size: 1.2rem;
 }
 .icons, .menu-icon {
-    font-size: 1rem;
+    font-size: 1.5rem;
 }
 
 .sidebar {
     padding-top: 30px;
 }
 .sidebar li a{
-    font-size: .8rem;
+    font-size: 1rem;
 }
 .sidebar li a img{
     width: 15px;
@@ -250,10 +250,11 @@ h1 {
     width: 20px;
 }
 .rebajas-hero h1 {
+    margin-top: -30px;
     font-size: 1rem;
 }
 .rebajas-hero p {
-    font-size: .5rem;
+    font-size: .8rem;
 }
 .filter-bar {
     font-size: .5rem;
