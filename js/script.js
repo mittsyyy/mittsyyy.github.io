@@ -13,3 +13,4 @@ if (closeMenuBtn) {
         menuLateral.classList.remove('abierto');
     });
 }
+

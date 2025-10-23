@@ -42,7 +42,23 @@ section#home header div nav ul li a{
    display: none;
 }
 .products-grid {
-    grid-template-columns: 1fr 1fr ; 
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); 
+    gap: 15px 10px;
+    padding: 10px 10px;
+}
+.login-box {
+    width: 500px; 
+    height: 600px;
+}
+.login-form h1 {
+    font-size: 2em;
+ }
+.input-group input {
+    font-size: 2rem;
+}
+.options-row {
+    font-size: 1rem;
 }
 }
 /*Reglas de diseño para telefono*/
@@ -116,7 +132,7 @@ section#home .nap{
    display: block; 
 }
 body{
-    width: 600px;
+    overflow-x: hidden;
 }
 .text-content {
     max-width: 100%;
@@ -171,10 +187,16 @@ body{
     height: 35px;
     font-size: .8rem;
 } 
-section#stock header{
-    margin-left: -20px ;
+section#stock{
+    width: 60%;
+}
+section#stock h2{
+    margin-left: -25px;
     font-size: 1rem;
 }  
+section#stock{
+    padding-bottom: 70px;
+}
 .productos{
     width: 130%;
 }
@@ -201,8 +223,8 @@ section#stock header{
 }
 
 .yoss{
-    margin-left: -25px ;
-    font-size: 1.5rem;
+    margin-left: -25px;
+    font-size: 1rem;
 }
 .p-yoss{
     width: 300px;
@@ -224,7 +246,7 @@ h1 {
 }
 .top-banner {
     padding: 8px 0;
-    font-size: 1rem;
+    font-size: .6rem;
 }
 .logo {
     padding-left: 70px;
@@ -261,7 +283,10 @@ h1 {
     
 }
 .products-grid {
-    grid-template-columns: 1fr 1fr; 
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); 
+    gap: 15px 10px;
+    padding: 10px 10px;
 }
 .product-card {
     width: 50%px;
@@ -280,8 +305,8 @@ h1 {
 }
 
 .product-image {
-    width: 270px;
-    height: 270px;
+    width: 100%;
+    height: auto;
     display: block;
     margin-bottom: 10px;
 }
@@ -317,5 +342,29 @@ h1 {
 }
 .color-swatch.more {
     font-size: .8rem;
+}
+.footer-container {
+    flex-direction: column;
+    gap: 0;
+    height: 120px;
+    margin-top: -20px;
+}
+.footer-links, 
+.footer-contact {
+   display: none;
+}
+
+.login-box {
+    width: 350px; 
+    height: 500px;
+}
+.login-form h1 {
+    font-size: 1.5em;
+ }
+.input-group input {
+    font-size: .8em;
+}
+.options-row {
+    font-size: 0.7em;
 }
 }

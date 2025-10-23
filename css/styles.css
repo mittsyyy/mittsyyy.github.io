@@ -162,8 +162,9 @@ section#stock{
     margin-top: 90px;
     padding-left: 50px;
     width: 100vw;
+    padding-bottom: 80px;
 }
-section#stock header{
+section#stock h2{
     margin-top: 50px;
     color: white;
     font-size: 1.5rem;
@@ -296,4 +297,76 @@ transform: translateY(0);
 }
 .p-yoss a:hover {
     color: var(--bg-btn);
+}
+/*------footer---------*/
+.main-footer {
+    background-color: var(--product-bg-1); 
+    color: #ffffff; 
+    padding: 60px 0 0 0;
+}
+.footer-container {
+    max-width: 1200px;
+    margin: 0 auto; 
+    padding: 0 20px 40px 20px;
+    display: flex;
+    justify-content: space-between; 
+    gap: 30px; 
+    flex-wrap: wrap;
+}
+.footer-info, 
+.footer-links, 
+.footer-contact {
+    flex: 1 1 200px; 
+    margin-bottom: 20px;
+}
+.main-footer h4 {
+    font-size: 1.2em;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+.footer-logo {
+    font-size: 1.5em;
+     font-family: "Irish Grover", system-ui;
+    margin-bottom: 20px;
+}
+.copyright-text,
+.footer-contact p,
+.footer-contact address {
+    font-size: 0.9em;
+    line-height: 1.6;
+    margin-bottom: 10px;
+    color: #b0c4de;
+}
+.footer-links ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-links li {
+    margin-bottom: 10px;
+}
+
+.footer-links a {
+    color: #b0c4de;
+    text-decoration: none;
+    font-size: 0.95em;
+    transition: color 0.2s;
+}
+
+.footer-links a:hover {
+    color: #ffffff;
+}
+.social-icons a {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    border-radius: 50%;
+    margin-right: 10px;
+    text-decoration: none;
+}
+.fa-brands{
+    color: #b0c4de;
 }
