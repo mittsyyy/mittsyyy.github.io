@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Detalles del Producto</title>
+  <link rel="stylesheet" href="/css/detalles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div class="logo">KosmeTICs</div>
+    <nav>
+      <a href="#">Shop</a>
+      <a href="#">Brands</a>
+      <a href="#">Offers</a>
+      <a href="#">Blog</a>
+      <a href="#">About</a>
+    </nav>
+    <div class="icons">
+      <i class="fas fa-search"></i>
+      <i class="fas fa-shopping-cart"></i>
+    </div>
+  </header>
+
+  <!-- PRODUCT SECTION -->
+  <section class="product-section">
+    <!-- Galería -->
+    <div class="product-gallery">
+      <div class="thumbs">
+        <img src="/detalles/img/img.jpeg" alt="thumb" class="thumb active">
+        <img src="/detalles/img/img2.jpeg" alt="thumb" class="thumb">
+        <img src="/detalles/img/img3.jpeg" alt="thumb" class="thumb">
+        <img src="/detalles/img/img4.jpg" alt="thumb" class="thumb">
+      </div>
+      <div class="main-img">
+        <img id="main-product-img" src="/detalles/img/img.jpeg" alt="Producto principal">
+      </div>
+    </div>
+
+    <!-- Detalles del producto -->
+    <div class="product-info">
+      <p class="brand">EVERYDAY HUMANS</p>
+      <h1>Oh My Bod! Sunscreen Lotion</h1>
+      <div class="rating">
+        <i class="fas fa-star"></i>
+        <i class="fas fa-star"></i>
+        <i class="fas fa-star"></i>
+        <i class="fas fa-star"></i>
+        <i class="fas fa-star-half-alt"></i>
+        <span>214 reviews</span>
+      </div>
+      <div class="price">
+        <span class="current">$16.00</span>
+        <span class="old">$20.00</span>
+        <span class="discount">20% OFF</span>
+      </div>
+      <p class="desc">A reliable bodyguard for your skin, with secret uses. This lightweight, long-lasting SPF50 sunscreen lotion protects you from the harshest midday sun.</p>
+
+      <!-- Tallas -->
+      <div class="option">
+        <h3>Size:</h3>
+        <div class="sizes">
+          <button class="size-btn">50ml</button>
+          <button class="size-btn active">100ml</button>
+        </div>
+      </div>
+
+      <!-- Cantidad -->
+      <div class="quantity">
+        <button id="decrease">-</button>
+        <input type="number" id="quantity" value="1" min="1">
+        <button id="increase">+</button>
+      </div>
+
+      <!-- Botón añadir al carrito -->
+      <button class="add-cart"><i class="fas fa-shopping-cart"></i> ADD TO CART</button>
+
+      <p class="shipping">Ships for free the week of February 14th.</p>
+
+      <!-- Iconos info -->
+      <div class="product-icons">
+        <div><i class="fas fa-flask"></i> Safe & Non-toxic</div>
+        <div><i class="fas fa-user-md"></i> Dermatologist Created</div>
+        <div><i class="fas fa-leaf"></i> Biodegradable</div>
+        <div><i class="fas fa-paw"></i> Vegan & Cruelty-free</div>
+      </div>
+
+      <!-- Detalle -->
+      <div class="detail">
+        <h3>Detail</h3>
+        <p>This lightweight SPF50 lotion protects from UV exposures, dry skin and more.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- REVIEWS -->
+  <section class="reviews">
+    <h2>Customer Reviews</h2>
+    <div id="reviews-container">
+        
+    </div>
+  </section>
+  <script src="./js/detalles.js"></script>
+
+</body>
+</html>

@@ -1,5 +1,5 @@
-
-const openMenuBtn = document.getElementById('open-menu-btn'); 
+window.onload= ()=>{
+    const openMenuBtn = document.getElementById('open-menu-btn'); 
 
 const menuLateral = document.getElementById('menu-lateral');
 
@@ -12,5 +12,7 @@ if (closeMenuBtn) {
     closeMenuBtn.addEventListener('click', () => {
         menuLateral.classList.remove('abierto');
     });
+}
+
 }
 
