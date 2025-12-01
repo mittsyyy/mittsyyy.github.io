@@ -45,10 +45,7 @@ $nombreUsuario = $_SESSION['usuario_nombre'];
                 <i class="fas fa-file-alt"></i>
                 <span>Reportes</span>
             </a>
-            <a href="#auditoria" class="menu-item" data-section="auditoria">
-                <i class="fas fa-history"></i>
-                <span>Auditoría</span>
-            </a>
+            
         </nav>
         <div class="sidebar-footer">
             
@@ -188,19 +185,7 @@ $nombreUsuario = $_SESSION['usuario_nombre'];
                 </div>
             </section>
 
-            <!-- SECCIÓN: Auditoría -->
-            <section id="auditoria" class="content-section">
-                <div class="section-header">
-                    <select id="filtro-accion" class="form-control">
-                        <option value="">Todas las acciones</option>
-                        <option value="INSERT">Insertar</option>
-                        <option value="UPDATE">Actualizar</option>
-                        <option value="DELETE">Eliminar</option>
-                    </select>
-                    <input type="date" id="filtro-fecha-auditoria" class="form-control">
-                </div>
-                <div id="tabla-auditoria" class="table-container"></div>
-            </section>
+           
         </div>
     </div>
 

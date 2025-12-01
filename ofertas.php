@@ -54,7 +54,7 @@
         <div class="product-card">
             <div class="discount-tag">- $ 400.00</div>
             <img src="img/rr1.webp" alt="" class="product-image">
-            <button class="add-to-cart-btn">+</button>
+            <a href="detalles.php?id=7" class="add-to-cart-btn" style="text-decoration: none">+</a>
             <div class="product-details">
                 <p class="product-name">CLOUD in LIGHT BLUE</p>
                 <p class="product-color">Back 70 USA</p>
@@ -71,7 +71,7 @@
         <div class="product-card">
             <div class="discount-tag">- $ 699.00</div>
             <img src="img/r2.webp" alt="" class="product-image">
-            <button class="add-to-cart-btn">+</button>
+            <a href="detalles.php?id=8" class="add-to-cart-btn" style="text-decoration: none">+</a>
             <div class="product-details">
                 <p class="product-name">AIR JORDAN 1 RETRO HIGH OG</p>
                 <p class="product-color">Black & White</p>
@@ -88,7 +88,7 @@
         <div class="product-card">
             <div class="discount-tag">- $ 400.00</div>
             <img src="img/r3.webp" alt="" class="product-image">
-            <button class="add-to-cart-btn">+</button>
+            <a href="detalles.php?id=9" class="add-to-cart-btn" style="text-decoration: none">+</a>
             <div class="product-details">
                 <p class="product-name">AIR JORDAN 1 RETRO HIGH OG</p>
                 <p class="product-color">Bordeaux & white</p>
@@ -105,7 +105,7 @@
         <div class="product-card">
             <div class="discount-tag">- $ 699.00</div>
             <img src="img/r4.webp" alt="" class="product-image">
-            <button class="add-to-cart-btn">+</button>
+            <a href="detalles.php?id=10" class="add-to-cart-btn" style="text-decoration: none">+</a>
             <div class="product-details">
                 <p class="product-name">AIR JORDAN</p>
                 <p class="product-color">11 RETRO LOW</p>
@@ -123,7 +123,7 @@
         <div class="product-card">
             <div class="discount-tag">- $ 400.00</div>
             <img src="img/r5.webp" alt="" class="product-image">
-            <button class="add-to-cart-btn">+</button>
+            <a href="detalles.php?id=11" class="add-to-cart-btn" style="text-decoration: none">+</a>
             <div class="product-details">
                 <p class="product-name">AIR JORDAN 1</p>
                 <p class="product-color">LOW SE</p>
@@ -140,7 +140,7 @@
         <div class="product-card">
             <div class="discount-tag">- $ 699.00</div>
             <img src="img/r6.webp" alt="" class="product-image">
-            <button class="add-to-cart-btn">+</button>
+            <a href="detalles.php?id=12" class="add-to-cart-btn" style="text-decoration: none">+</a>
             <div class="product-details">
                 <p class="product-name">JORDAN SESSION SE</p>
                 <p class="product-color">Orange</p>
@@ -157,7 +157,7 @@
         <div class="product-card">
             <div class="discount-tag">- $ 400.00</div>
             <img src="img/r7.webp" alt="" class="product-image">
-            <button class="add-to-cart-btn">+</button>
+            <a href="detalles.php?id=13" class="add-to-cart-btn" style="text-decoration: none">+</a>
             <div class="product-details">
                 <p class="product-name">ADILETTE 22</p>
                 <p class="product-color">Gray</p>
@@ -174,7 +174,7 @@
         <div class="product-card">
             <div class="discount-tag">- $ 699.00</div>
             <img src="img/r8.webp" alt="" class="product-image">
-            <button class="add-to-cart-btn">+</button>
+            <a href="detalles.php?id=14" class="add-to-cart-btn" style="text-decoration: none">+</a>
             <div class="product-details">
                 <p class="product-name">CENTENNIAL 85 HI</p>
                 <p class="product-color">Pink</p>

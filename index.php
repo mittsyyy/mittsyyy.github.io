@@ -153,9 +153,7 @@ if ($resultado && $resultado->num_rows > 0) {
             <?php else: ?>
                 <p style="grid-column: 1/-1; text-align: center; padding: 40px;">No hay productos disponibles. Por favor, agrega productos desde el panel de administración.</p>
             <?php endif; ?>
-            <div class="p-yoss">
-                <a href="#"><button>></button></a>
-            </div>
+            
                  <div class="p-yoss">
                     <a href="#">
                         <button>></button>
