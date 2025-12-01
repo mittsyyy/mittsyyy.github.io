@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ofertas</title>
-    <link rel="stylesheet" href="/css/ofertas.css">
+    <link rel="stylesheet" href="./css/ofertas.css">
     <link rel="stylesheet" href="css/mediaquerys.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -18,7 +18,7 @@
     <nav id="menu-lateral" class="sidebar">
          <button id="close-menu-btn"><img src="img/b.svg" alt=""></button>
         <ul>
-            <li><a href="index.html"><img src="img/h.svg" alt="">Inicio</a></li>
+            <li><a href="index.php"><img src="img/h.svg" alt="">Inicio</a></li>
             <li><a href=""><img src="img/s.svg" alt="">Modelos</a></li>
             <li><a href=""><img src="img/n.svg" alt="">Notificaciones</a></li>
             <li><a href=""><img src="img/c.svg" alt="">Carrito</a></li>
@@ -31,7 +31,7 @@
 
     <header class="main-header">
         <div class="menu-icon" id="open-menu-btn">☰</div>
-        <div class="logo">SNKRX</div> 
+        <div class="logo"><a href="index.php">SNKRX</a></div> 
         <div class="icons">
             <span class="search-icon"><img src="/img/search.svg" alt=""></span>
             <span class="bag-icon"><img src="/img/bag.svg" alt=""></span>

@@ -2,55 +2,52 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: "Inter", Arial, sans-serif;
+  font-family: "Archivo Black", sans-serif;
 }
 
 body {
-  background: #fafafa;
-  color: #333;
+  background: #43606B;
+  color: white;
 }
-
-/* HEADER */
 header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 20px 60px;
-  background: #fff;
+  background: #43606B;
   box-shadow: 0 1px 3px rgba(0,0,0,0.1);
 }
 
 header .logo {
   font-size: 1.5em;
   font-weight: bold;
+  font-family: "Irish Grover", system-ui;
 }
 
 header nav a {
   margin: 0 15px;
   text-decoration: none;
-  color: #333;
+  color: white;
   font-weight: 500;
+  
+    font-family: "Irish Grover", system-ui;
 }
 
 header nav a:hover {
-  color: #7c3aed;
+  color: #12313d;
 }
 
 .icons i {
   margin-left: 15px;
   cursor: pointer;
-  color: #444;
+  color: white;
 }
-
-/* PRODUCT SECTION */
 .product-section {
   display: flex;
   max-width: 1100px;
   margin: 60px auto;
   gap: 60px;
 }
-
-/* Galería */
 .product-gallery {
   display: flex;
   gap: 20px;
@@ -73,23 +70,26 @@ header nav a:hover {
 }
 
 .thumb.active {
-  border-color: #7c3aed;
+  border-color: #12313d;
 }
-
+.main-img{
+  width:500px;
+  border:2px solid #12313d;
+  border-radius:5px;
+}
 .main-img img {
-  width: 400px;
+  width: 500px;
   height: 500px;
   object-fit: cover;
   border-radius: 10px;
 }
 
-/* Detalles del producto */
 .product-info {
   flex: 1;
 }
 
 .product-info .brand {
-  color: #777;
+  color: white;
   font-size: 0.9em;
   text-transform: uppercase;
   letter-spacing: 1px;
@@ -106,7 +106,7 @@ header nav a:hover {
 }
 
 .rating span {
-  color: #666;
+  color: white;
   margin-left: 10px;
 }
 
@@ -124,7 +124,7 @@ header nav a:hover {
 
 .price .old {
   text-decoration: line-through;
-  color: #999;
+  color:white;
 }
 
 .price .discount {
@@ -133,7 +133,7 @@ header nav a:hover {
 }
 
 .desc {
-  color: #555;
+  color:white;
   margin-bottom: 25px;
 }
 
@@ -159,11 +159,10 @@ header nav a:hover {
 
 .size-btn.active {
   background: #e5e7eb;
-  border-color: #7c3aed;
+  border-color: #12313d;
   color: #000;
 }
 
-/* Cantidad */
 .quantity {
   display: flex;
   align-items: center;
@@ -188,9 +187,8 @@ header nav a:hover {
   padding: 5px;
 }
 
-/* Botón de carrito */
 .add-cart {
-  background: #4c1d95;
+  background: #CF352B;
   color: white;
   border: none;
   padding: 14px 25px;
@@ -201,27 +199,25 @@ header nav a:hover {
 }
 
 .add-cart:hover {
-  background: #6d28d9;
+  background: #12313d;
 }
 
 .shipping {
-  color: #666;
+  color:white;
   font-size: 0.9em;
   margin-top: 10px;
 }
-
-/* Iconos del producto */
 .product-icons {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 15px;
   margin-top: 30px;
-  color: #555;
+  color: white;
   font-size: 0.9em;
 }
 
 .product-icons i {
-  color: #7c3aed;
+  color: #12313d;
   margin-right: 5px;
 }
 
@@ -233,8 +229,6 @@ header nav a:hover {
   margin-bottom: 5px;
   font-size: 1em;
 }
-
-/* REVIEWS */
 .reviews {
   max-width: 900px;
   margin: 60px auto;
@@ -257,6 +251,6 @@ header nav a:hover {
 .review-actions button {
   background: none;
   border: none;
-  color: #7c3aed;
+  color: #12313d;
   cursor: pointer;
 }

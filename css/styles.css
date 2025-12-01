@@ -7,6 +7,7 @@
 
     --product-bg-1: #385764; 
     --product-bg-2: #5b84a1; 
+    --prueba:#3babd7;
 
 }
 *{
@@ -59,9 +60,10 @@ section#home header div nav ul li a{
     display: none;
 }
 .iconos{
+    display: flex;
     margin-right: 50px;
     margin-top: 10px;
-    gap: 20px;
+    gap: 15 px;
 }
 .contact{
     width: 30px;
@@ -248,7 +250,9 @@ transform: translateY(0);
     margin-top: 0px;
     margin-left: 300px;
 }
-
+.añadir a{
+    text-decoration: none;
+}
 .yoss{
     margin-top: 50px;
     color: white;
