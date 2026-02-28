@@ -1,0 +1,137 @@
+<!-- ═══════════════════════════════════════
+     PANEL: CONTACTO
+     Contiene presentación + contacto
+═══════════════════════════════════════ -->
+
+<div class="panel-header">
+  <span class="panel-greeting">Bienvenida, Mittsy!</span>
+  <span class="panel-badge">Lenguajes y Autómatas II</span>
+</div>
+
+<!-- ═════════ PRESENTACIÓN ═════════ -->
+
+<div class="card intro-card">
+  <div class="card-title">
+     Hola, soy Mittsy — Estudiante
+  </div>
+
+  <p>
+    Passionate about creating innovative digital solutions.
+    With a solid foundation in web development,
+    I'm dedicated to building creative and functional projects,
+    transforming ideas into digital experiences.
+  </p>
+
+  <div class="people-row">
+    <div class="person-chip">
+      <span class="dot"></span>
+      Ing. Gerardo Lechuga
+    </div>
+
+    <div class="person-chip">
+      <span class="dot"></span>
+      Mittsy Andazola
+    </div>
+  </div>
+</div>
+
+<!-- ═════════ HABILIDADES ═════════ -->
+
+<div class="card">
+  <div class="card-title">
+     Habilidades
+  </div>
+
+  <div class="skill-item">
+    <div class="skill-label">
+      <span>HTML / CSS</span>
+      <span>90%</span>
+    </div>
+    <div class="skill-bar">
+      <div class="skill-fill" style="--pct:90%"></div>
+    </div>
+  </div>
+
+  <div class="skill-item">
+    <div class="skill-label">
+      <span>JavaScript</span>
+      <span>75%</span>
+    </div>
+    <div class="skill-bar">
+      <div class="skill-fill" style="--pct:75%"></div>
+    </div>
+  </div>
+
+  <div class="skill-item">
+    <div class="skill-label">
+      <span>Python</span>
+      <span>70%</span>
+    </div>
+    <div class="skill-bar">
+      <div class="skill-fill" style="--pct:70%"></div>
+    </div>
+  </div>
+
+  <div class="skill-item">
+    <div class="skill-label">
+      <span>Java</span>
+      <span>65%</span>
+    </div>
+    <div class="skill-bar">
+      <div class="skill-fill" style="--pct:65%"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═════════ CONTACTO ═════════ -->
+
+<div class="card">
+  <div class="card-title">
+    <span class="nav-icon">
+        <!-- Icono Contacto -->
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M22 16.92v3a2 2 0 0 1-2.18 2A19.79 19.79 0 0 1 11.82 19a19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 3.09 4.18 2 2 0 0 1 5.07 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L9.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>
+        </svg>
+      </span> Información de Contacto
+  </div>
+
+  <div class="contact-item">
+    <div class="c-label">Teléfono</div>
+    <div class="c-value">652-104-0000</div>
+  </div>
+
+  <div class="contact-item">
+    <div class="c-label">Instagram</div>
+    <div class="c-value">@mittsyandazola</div>
+  </div>
+
+  <div class="contact-item">
+    <div class="c-label">Facebook</div>
+    <div class="c-value">Mittsy Andazola</div>
+  </div>
+
+  <div class="contact-item">
+    <div class="c-label">Correo Institucional</div>
+    <div class="c-value">23CG0268@itsncg.edu.mx</div>
+  </div>
+</div>
+
+<!-- ═════════ SCRIPT PARA ANIMAR BARRAS ═════════ -->
+
+<script>
+(function () {
+  const fills = document.querySelectorAll('#panel-contacto .skill-fill');
+  if (!fills.length) return;
+
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('loaded'), 200);
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.3 });
+
+  fills.forEach(f => obs.observe(f));
+})();
+</script>
