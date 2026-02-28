@@ -125,3 +125,29 @@ body {
 .unidad li {
     margin-bottom: 5px;
 }
+/* ===== ESTILO PARA ICONOS DEL SIDEBAR ===== */
+
+.sidebar nav a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.nav-icon {
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.nav-icon svg {
+    width: 20px;
+    height: 20px;
+}
+
+/* Opcional: efecto hover más bonito */
+.sidebar nav a:hover svg {
+    transform: scale(1.1);
+    transition: 0.2s ease;
+}
