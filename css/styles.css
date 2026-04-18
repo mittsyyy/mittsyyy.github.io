@@ -875,3 +875,198 @@ table.schedule tbody tr:hover { background: #fff5f7; }
 .highlight {
   border: 2px solid var(--pink-accent);
 }
+/* ═══════════════════════════════════════════════════════
+   ESTILOS EXTENDIDOS PARA CONTENIDO DE UNIDADES
+═══════════════════════════════════════════════════════ */
+
+/* Tabla de datos con estilo */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 12px;
+  font-size: 0.82rem;
+}
+.data-table th {
+  background: var(--pink-mid);
+  color: #fff;
+  padding: 8px 10px;
+  text-align: left;
+  font-weight: 800;
+}
+.data-table td {
+  padding: 7px 10px;
+  border-bottom: 1px solid var(--pink-light);
+  color: var(--text-dark);
+  vertical-align: top;
+}
+.data-table tr:hover td {
+  background: #fff5f7;
+}
+.data-table td code {
+  background: var(--pink-light);
+  padding: 1px 6px;
+  border-radius: 6px;
+  font-size: 0.78rem;
+  font-family: monospace;
+  color: var(--pink-dark);
+}
+
+/* Bloque de definición (término + descripción) */
+.def-block {
+  border-left: 4px solid var(--pink-main);
+  padding: 8px 14px;
+  margin-top: 10px;
+  background: #fff8fa;
+  border-radius: 0 10px 10px 0;
+}
+.def-block .def-term {
+  font-weight: 800;
+  color: var(--pink-dark);
+  font-size: 0.88rem;
+}
+.def-block .def-desc {
+  color: var(--text-mid);
+  font-size: 0.83rem;
+  margin-top: 2px;
+}
+
+/* Diagrama de árbol / flujo en texto */
+.tree-box {
+  background: #fff5f7;
+  border: 1.5px solid var(--pink-mid);
+  border-radius: 12px;
+  padding: 14px 16px;
+  font-family: monospace;
+  font-size: 0.8rem;
+  line-height: 1.7;
+  margin-top: 10px;
+  white-space: pre;
+  overflow-x: auto;
+}
+
+/* Comparación lado a lado */
+.compare-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 10px;
+}
+.compare-col {
+  background: #fff8fa;
+  border-radius: 12px;
+  padding: 10px 14px;
+  border: 1.5px solid var(--pink-light);
+}
+.compare-col .compare-title {
+  font-weight: 800;
+  font-size: 0.82rem;
+  color: var(--pink-dark);
+  margin-bottom: 6px;
+}
+.compare-col ul {
+  padding-left: 14px;
+  font-size: 0.8rem;
+  color: var(--text-mid);
+}
+.compare-col ul li {
+  margin-bottom: 3px;
+}
+
+/* Badge de sección numerada */
+.section-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--pink-accent);
+  color: #fff;
+  border-radius: 20px;
+  padding: 3px 12px;
+  font-size: 0.75rem;
+  font-weight: 800;
+  margin-bottom: 6px;
+}
+
+/* Bloque de pasos numerados */
+.steps-list {
+  counter-reset: step;
+  padding: 0;
+  list-style: none;
+  margin-top: 10px;
+}
+.steps-list li {
+  counter-increment: step;
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  margin-bottom: 10px;
+  font-size: 0.83rem;
+  color: var(--text-dark);
+}
+.steps-list li::before {
+  content: counter(step);
+  min-width: 24px;
+  height: 24px;
+  background: var(--pink-main);
+  color: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+  font-size: 0.75rem;
+  flex-shrink: 0;
+}
+
+/* Bloque de memoria (visualización de stack/heap) */
+.memory-map {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin-top: 10px;
+  border: 2px solid var(--pink-mid);
+  border-radius: 12px;
+  overflow: hidden;
+  font-size: 0.78rem;
+}
+.memory-map .mem-row {
+  display: flex;
+  border-bottom: 1px solid var(--pink-light);
+}
+.memory-map .mem-row:last-child {
+  border-bottom: none;
+}
+.memory-map .mem-label {
+  background: var(--pink-light);
+  padding: 6px 10px;
+  font-weight: 800;
+  color: var(--pink-dark);
+  width: 120px;
+  flex-shrink: 0;
+  font-family: monospace;
+}
+.memory-map .mem-desc {
+  padding: 6px 12px;
+  color: var(--text-mid);
+}
+
+/* Alerta / nota informativa */
+.info-note {
+  background: #fdf3f5;
+  border: 1.5px solid var(--pink-mid);
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 0.82rem;
+  color: var(--text-dark);
+  margin-top: 10px;
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+}
+.info-note .note-icon {
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+
+@media (max-width: 600px) {
+  .compare-grid { grid-template-columns: 1fr; }
+}

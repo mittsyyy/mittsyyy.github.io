@@ -1,0 +1,223 @@
+<div class="unit-hero">
+  <h1>Unidad 3</h1>
+  <h2>Optimización</h2>
+  <p class="unit-meta">Lenguajes y Autómatas II · Ingeniería en Sistemas Computacionales<br><strong>Mittsy Andazola Antillón</strong></p>
+</div>
+<div class="unit-content">
+
+<!-- Introducción -->
+<div class="card" style="--ci:1">
+  <div class="card-title">🎯 Introducción a la Optimización</div>
+  <p>La optimización busca mejorar el código generado sin alterar su comportamiento observable. El objetivo puede ser:</p>
+  <div class="compare-grid">
+    <div class="compare-col">
+      <div class="compare-title">⏱️ Velocidad</div>
+      <ul>
+        <li>Reducir el número de instrucciones</li>
+        <li>Evitar accesos innecesarios a memoria</li>
+        <li>Aprovechar la caché del procesador</li>
+      </ul>
+    </div>
+    <div class="compare-col">
+      <div class="compare-title">💾 Memoria</div>
+      <ul>
+        <li>Reducir el número de temporales</li>
+        <li>Minimizar el uso de registros</li>
+        <li>Reducir el tamaño del binario</li>
+      </ul>
+    </div>
+  </div>
+  <div class="info-note"><span class="note-icon">⚠️</span><span><strong>Regla fundamental:</strong> la optimización <em>nunca debe cambiar el resultado</em> del programa. Solo cambia la forma en que se obtiene ese resultado.</span></div>
+</div>
+
+<!-- 3.1 Tipos de optimización -->
+<div class="card" style="--ci:2">
+  <div class="card-title">📌 3.1 Tipos de Optimización</div>
+
+  <div class="section-badge">3.1.1 Optimización Local</div>
+  <p>Se aplica dentro de un <strong>bloque básico</strong>: una secuencia de instrucciones sin saltos ni etiquetas intermedias. Es la más simple y siempre segura.</p>
+
+  <p style="margin-top:10px"><strong>a) Eliminación de subexpresiones comunes (CSE)</strong></p>
+  <div class="code-box">/* Antes */
+t1 = a * b
+t2 = a * b   ← repetición innecesaria
+t3 = t1 + t2
+
+/* Después */
+t1 = a * b
+t3 = t1 + t1  ← reutiliza t1, ahorra una multiplicación</div>
+
+  <p style="margin-top:10px"><strong>b) Propagación de constantes</strong></p>
+  <div class="code-box">/* Antes */
+x = 5
+y = x + 3    ← x es constante conocida
+
+/* Después */
+x = 5
+y = 8        ← calculado en tiempo de compilación</div>
+
+  <p style="margin-top:10px"><strong>c) Plegado de constantes (Constant Folding)</strong></p>
+  <div class="code-box">/* Antes */
+t1 = 2 * 3   ← ambos operandos son constantes
+
+/* Después */
+t1 = 6       ← calculado en compilación, no en ejecución</div>
+
+  <p style="margin-top:10px"><strong>d) Eliminación de código muerto</strong></p>
+  <div class="code-box">/* Antes */
+x = 5
+x = 10      ← la asignación anterior nunca se usa
+print(x)
+
+/* Después */
+x = 10
+print(x)</div>
+
+  <div class="section-badge" style="margin-top:16px">3.1.2 Optimización de Ciclos</div>
+  <p>Los bucles son el objetivo más importante: un código que se ejecuta 10,000 veces tiene 10,000 veces más impacto si es optimizado.</p>
+
+  <p style="margin-top:10px"><strong>a) Movimiento de código invariante</strong> — código que produce el mismo resultado en cada iteración se mueve fuera del ciclo:</p>
+  <div class="code-box">/* Antes */
+for i = 1 to n:
+  t = a * b        ← 'a' y 'b' no cambian en el ciclo
+  arr[i] = t + i
+
+/* Después */
+t = a * b          ← se calcula UNA sola vez
+for i = 1 to n:
+  arr[i] = t + i</div>
+
+  <p style="margin-top:10px"><strong>b) Reducción de fuerza</strong> — reemplaza operaciones costosas por equivalentes más baratas:</p>
+  <div class="code-box">/* Antes (multiplicación en cada iteración) */
+for i = 0 to n-1:
+  t = i * 4        ← multiplicación es costosa
+
+/* Después (suma en cada iteración) */
+t = 0
+for i = 0 to n-1:
+  ...              ← usa t
+  t = t + 4        ← suma es más rápida</div>
+
+  <p style="margin-top:10px"><strong>c) Eliminación de variables de inducción</strong> — variables que solo cambian linealmente respecto al contador:</p>
+  <div class="code-box">/* Antes */
+for i = 0 to n:
+  j = i * 8 + base
+  A[j] = ...
+
+/* Después */
+j = base
+for i = 0 to n:
+  A[j] = ...
+  j = j + 8       ← j ya no depende de i, se actualiza con suma</div>
+
+  <div class="section-badge" style="margin-top:16px">3.1.3 Optimización Global</div>
+  <p>Analiza el flujo de control entre múltiples bloques básicos. Requiere construir el <strong>grafo de flujo de control (CFG)</strong>.</p>
+  <ul class="unit-list">
+    <li><strong>Propagación de copias global:</strong> si <code>x = y</code> y x no cambia, reemplazar usos de x por y en todos los bloques alcanzables</li>
+    <li><strong>Eliminación de código muerto global:</strong> eliminar definiciones de variables que nunca se usan en ningún camino de ejecución</li>
+    <li><strong>CSE global:</strong> eliminar subexpresiones comunes entre diferentes bloques básicos</li>
+  </ul>
+  <div class="tree-box">Grafo de flujo de control (CFG):
+
+  [Bloque 1: x = a + b]
+         |
+    ┌────┴────┐
+    ↓         ↓
+[Bloque 2] [Bloque 3]
+[y = x * 2] [z = x + 1]
+    └────┬────┘
+         ↓
+  [Bloque 4: print(y,z)]</div>
+
+  <div class="section-badge" style="margin-top:16px">3.1.4 Optimización de Mirilla (Peephole)</div>
+  <p>Examina una <strong>ventana deslizante</strong> de pocas instrucciones consecutivas del código final (ensamblador o código máquina) y las reemplaza por versiones más eficientes.</p>
+  <table class="data-table">
+    <tr><th>Patrón (antes)</th><th>Optimización (después)</th><th>Tipo</th></tr>
+    <tr><td><code>STORE x<br>LOAD x</code></td><td>Eliminar el LOAD (el valor ya está en registro)</td><td>Instrucción redundante</td></tr>
+    <tr><td><code>JMP L1<br>L1: ...</code></td><td>Eliminar el JMP (salto al siguiente)</td><td>Salto redundante</td></tr>
+    <tr><td><code>MUL R, 2</code></td><td><code>SHL R, 1</code> (shift left = mult por 2)</td><td>Operación costosa → barata</td></tr>
+    <tr><td><code>MUL R, 1</code></td><td>Eliminar (mult por 1 = sin efecto)</td><td>Identidad algebraica</td></tr>
+    <tr><td><code>ADD R, 0</code></td><td>Eliminar (suma 0 = sin efecto)</td><td>Identidad algebraica</td></tr>
+    <tr><td><code>x = x + 1<br>x = x - 1</code></td><td>Eliminar ambas (se cancelan)</td><td>Código muerto</td></tr>
+  </table>
+</div>
+
+<!-- 3.2 Costos -->
+<div class="card" style="--ci:3">
+  <div class="card-title">📌 3.2 Costos</div>
+
+  <div class="section-badge">3.2.1 Costo de Ejecución</div>
+  <p>Cada instrucción tiene un costo en ciclos de CPU, accesos a memoria y uso de registros:</p>
+  <table class="data-table">
+    <tr><th>Recurso</th><th>Costo relativo</th><th>Detalle</th></tr>
+    <tr><td>Registro → Registro</td><td>1 ciclo</td><td>Operación más rápida</td></tr>
+    <tr><td>Caché L1</td><td>3-4 ciclos</td><td>Muy rápido</td></tr>
+    <tr><td>Caché L2/L3</td><td>10-40 ciclos</td><td>Moderado</td></tr>
+    <tr><td>RAM principal</td><td>100-200 ciclos</td><td>Lento</td></tr>
+    <tr><td>Suma/resta</td><td>1 ciclo</td><td>Operación básica</td></tr>
+    <tr><td>Multiplicación</td><td>3-5 ciclos</td><td>Más costosa</td></tr>
+    <tr><td>División</td><td>20-40 ciclos</td><td>Muy costosa, evitar en ciclos</td></tr>
+  </table>
+  <p style="margin-top:10px"><strong>Gestión de registros:</strong> el compilador asigna variables a registros para evitar accesos a memoria. Cuando los registros se agotan, se produce un <em>spill</em> (desbordamiento): la variable se guarda temporalmente en la pila.</p>
+  <p style="margin-top:8px"><strong>Gestión de pila:</strong> cada llamada a función crea un <em>marco de activación</em> con variables locales, parámetros y dirección de retorno. La pila crece y decrece conforme se llaman y retornan funciones.</p>
+
+  <div class="section-badge" style="margin-top:14px">3.2.2 Criterios para Mejorar el Código</div>
+  <ul class="unit-list">
+    <li><strong>Minimizar instrucciones:</strong> menos instrucciones = menos ciclos de reloj</li>
+    <li><strong>Favorecer registros sobre memoria:</strong> los accesos a RAM son 100× más lentos</li>
+    <li><strong>Evitar divisiones:</strong> reemplazar por multiplicaciones por el recíproco cuando sea posible</li>
+    <li><strong>Desenrollar ciclos (loop unrolling):</strong> duplicar el cuerpo del ciclo reduce la sobrecarga del contador</li>
+    <li><strong>Vectorización:</strong> aprovechar instrucciones SIMD (SSE, AVX) para procesar múltiples datos a la vez</li>
+    <li><strong>Inline de funciones:</strong> sustituir llamadas a funciones pequeñas por su cuerpo directo</li>
+  </ul>
+  <div class="code-box">/* Loop unrolling: antes */
+for i = 0 to 7:
+  a[i] = a[i] * 2
+
+/* Loop unrolling: después (desenrollado ×4) */
+a[0] = a[0] * 2;  a[1] = a[1] * 2
+a[2] = a[2] * 2;  a[3] = a[3] * 2
+a[4] = a[4] * 2;  a[5] = a[5] * 2
+a[6] = a[6] * 2;  a[7] = a[7] * 2
+/* Elimina 7 comparaciones y 7 saltos del ciclo */</div>
+
+  <div class="section-badge" style="margin-top:14px">3.2.3 Herramientas para Análisis del Flujo de Datos</div>
+  <p>El análisis de flujo de datos recopila información sobre cómo se usan los valores a través del programa:</p>
+
+  <div class="def-block">
+    <div class="def-term">Grafo de Flujo de Control (CFG)</div>
+    <div class="def-desc">Los nodos son bloques básicos; los arcos representan posibles transferencias de control (saltos, llamadas). Es la base de todo análisis global.</div>
+  </div>
+  <div class="def-block">
+    <div class="def-term">Reaching Definitions (Definiciones que alcanzan)</div>
+    <div class="def-desc">Para cada punto del programa, determina qué definiciones de variables pueden haber llegado hasta ese punto sin ser sobreescritas. Se calcula con los conjuntos GEN y KILL por bloque.</div>
+  </div>
+  <div class="def-block">
+    <div class="def-term">Live Variables (Variables vivas)</div>
+    <div class="def-desc">Una variable está <em>viva</em> en un punto si su valor actual puede ser usado en algún camino futuro. Información crítica para la asignación de registros.</div>
+  </div>
+  <div class="def-block">
+    <div class="def-term">Available Expressions (Expresiones disponibles)</div>
+    <div class="def-desc">Una expresión está disponible si ya fue calculada y los operandos no han cambiado desde entonces. Permite CSE global.</div>
+  </div>
+  <div class="code-box">/* Ejemplo de cálculo de GEN/KILL para reaching definitions */
+Bloque B: {
+  d1: x = a + b      ← GEN: {d1}
+  d2: y = c * d      ← GEN: {d1, d2}
+  d3: x = y + 1      ← KILL: {d1} (nueva def de x)
+                     ← GEN: {d2, d3}
+}
+KILL(B) = todas las definiciones de x excepto d3
+GEN(B)  = {d2, d3}</div>
+</div>
+
+<!-- Conclusión -->
+<div class="card highlight" style="--ci:4">
+  <div class="card-title">🧠 Conclusión</div>
+  <p>La optimización es el arte de hacer que el compilador genere código que corra más rápido y use menos recursos. Las técnicas van desde simples transformaciones locales (plegado de constantes, eliminación de código muerto) hasta análisis globales sofisticados (flujo de datos, asignación de registros). El compilador debe equilibrar el tiempo de compilación con la calidad del código generado.</p>
+  <div class="mini-tags">
+    <span>CSE</span><span>Constantes</span><span>Ciclos</span><span>Mirilla</span><span>CFG</span><span>Reaching Defs</span><span>Live Vars</span>
+  </div>
+</div>
+
+</div>

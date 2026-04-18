@@ -1,0 +1,253 @@
+<div class="unit-hero">
+  <h1>Unidad 4</h1>
+  <h2>Generación de Código Objeto</h2>
+  <p class="unit-meta">Lenguajes y Autómatas II · Ingeniería en Sistemas Computacionales<br><strong>Mittsy Andazola Antillón</strong></p>
+</div>
+<div class="unit-content">
+
+<!-- Introducción -->
+<div class="card" style="--ci:1">
+  <div class="card-title">🎯 Introducción</div>
+  <p>La <strong>generación de código objeto</strong> es la fase final del compilador. Transforma el código intermedio optimizado en instrucciones específicas para una arquitectura de hardware. El resultado puede ser:</p>
+  <table class="data-table">
+    <tr><th>Tipo de salida</th><th>Descripción</th><th>Ejemplo</th></tr>
+    <tr><td>Código ensamblador</td><td>Texto simbólico legible, luego ensamblado</td><td>archivo .asm → .o</td></tr>
+    <tr><td>Código máquina relocatable</td><td>Binario con referencias pendientes</td><td>archivo objeto .o</td></tr>
+    <tr><td>Código máquina absoluto</td><td>Binario listo para ejecutar</td><td>archivo .exe / ELF</td></tr>
+  </table>
+  <p style="margin-top:10px">Los tres problemas principales que debe resolver el generador de código son: <strong>selección de instrucciones</strong>, <strong>asignación de registros</strong> y <strong>ordenamiento de instrucciones</strong>.</p>
+</div>
+
+<!-- 4.1 Registros -->
+<div class="card" style="--ci:2">
+  <div class="card-title">📌 4.1 Registros</div>
+  <p>Los <strong>registros</strong> son la forma de almacenamiento más rápida disponible para el procesador. Están integrados directamente en la CPU y el acceso a ellos no requiere ningún ciclo de bus de memoria.</p>
+
+  <p style="margin-top:10px"><strong>Tipos de registros (arquitectura x86-64):</strong></p>
+  <table class="data-table">
+    <tr><th>Registro</th><th>Tamaño</th><th>Uso convencional</th></tr>
+    <tr><td><code>RAX / EAX</code></td><td>64/32 bits</td><td>Acumulador, valor de retorno de funciones</td></tr>
+    <tr><td><code>RBX / EBX</code></td><td>64/32 bits</td><td>Base, preservado entre llamadas</td></tr>
+    <tr><td><code>RCX / ECX</code></td><td>64/32 bits</td><td>Contador en ciclos, 4° argumento</td></tr>
+    <tr><td><code>RDX / EDX</code></td><td>64/32 bits</td><td>Datos, 3° argumento, división/mult</td></tr>
+    <tr><td><code>RSI / RDI</code></td><td>64 bits</td><td>2° y 1° argumentos de funciones</td></tr>
+    <tr><td><code>RSP</code></td><td>64 bits</td><td>Stack Pointer — apunta al tope de la pila</td></tr>
+    <tr><td><code>RBP</code></td><td>64 bits</td><td>Base Pointer — marco de pila actual</td></tr>
+    <tr><td><code>RIP</code></td><td>64 bits</td><td>Instruction Pointer — dirección de siguiente instrucción</td></tr>
+    <tr><td><code>R8–R15</code></td><td>64 bits</td><td>Registros de propósito general adicionales (x86-64)</td></tr>
+    <tr><td><code>XMM0–XMM15</code></td><td>128 bits</td><td>Punto flotante y operaciones SIMD</td></tr>
+  </table>
+
+  <p style="margin-top:12px"><strong>Problema de asignación de registros:</strong> hay más variables temporales que registros físicos. El compilador debe decidir cuáles variables mantener en registros y cuáles "derramar" (spill) a la memoria.</p>
+
+  <div class="def-block">
+    <div class="def-term">Graph Coloring (Coloreo de grafo de interferencia)</div>
+    <div class="def-desc">El algoritmo más usado: construye un grafo donde cada nodo es una variable y hay una arista si dos variables están vivas al mismo tiempo. Si el grafo puede colorearse con k colores (k = número de registros), no hay spill. Si no, se selecciona una variable para spill a memoria.</div>
+  </div>
+
+  <div class="code-box">/* Ejemplo: calcular cuáles vars están vivas simultáneamente */
+t1 = a + b    ← t1 nace aquí
+t2 = c * d    ← t2 nace aquí (t1 y t2 coexisten → interferencia)
+t3 = t1 + t2  ← t1, t2 mueren; t3 nace
+x  = t3       ← t3 muere
+
+Grafo de interferencia:
+  t1 ── t2   (coexisten en instrucción 2)
+  t1, t2 no interfieren con t3
+
+Si hay 2 registros: t1→R1, t2→R2, t3→R1 (reutiliza R1)</div>
+</div>
+
+<!-- 4.2 Lenguaje ensamblador -->
+<div class="card" style="--ci:3">
+  <div class="card-title">📌 4.2 Lenguaje Ensamblador</div>
+  <p>El lenguaje ensamblador es la <strong>representación simbólica del código máquina</strong>. Cada instrucción ensamblador corresponde 1:1 con una instrucción de la CPU. El ensamblador (<em>assembler</em>) lo convierte a binario.</p>
+
+  <p style="margin-top:10px"><strong>Instrucciones fundamentales x86-64:</strong></p>
+  <table class="data-table">
+    <tr><th>Instrucción</th><th>Sintaxis</th><th>Efecto</th></tr>
+    <tr><td>MOV</td><td><code>MOV dst, src</code></td><td>Copia src en dst</td></tr>
+    <tr><td>ADD</td><td><code>ADD dst, src</code></td><td>dst = dst + src</td></tr>
+    <tr><td>SUB</td><td><code>SUB dst, src</code></td><td>dst = dst – src</td></tr>
+    <tr><td>IMUL</td><td><code>IMUL dst, src</code></td><td>dst = dst × src (enteros con signo)</td></tr>
+    <tr><td>IDIV</td><td><code>IDIV divisor</code></td><td>RAX = RDX:RAX ÷ divisor</td></tr>
+    <tr><td>CMP</td><td><code>CMP a, b</code></td><td>Calcula a–b y actualiza flags (no guarda)</td></tr>
+    <tr><td>JMP</td><td><code>JMP etiqueta</code></td><td>Salta incondicionalmente</td></tr>
+    <tr><td>JE / JNE</td><td><code>JE etiqueta</code></td><td>Salta si igual / si no igual</td></tr>
+    <tr><td>JL / JG</td><td><code>JL etiqueta</code></td><td>Salta si menor / si mayor</td></tr>
+    <tr><td>PUSH</td><td><code>PUSH reg</code></td><td>Coloca reg en la pila (RSP -= 8)</td></tr>
+    <tr><td>POP</td><td><code>POP reg</code></td><td>Extrae de la pila a reg (RSP += 8)</td></tr>
+    <tr><td>CALL</td><td><code>CALL proc</code></td><td>Guarda dirección de retorno y salta a proc</td></tr>
+    <tr><td>RET</td><td><code>RET</code></td><td>Retorna al llamador (lee dirección de pila)</td></tr>
+    <tr><td>LEA</td><td><code>LEA dst, [mem]</code></td><td>Carga la <em>dirección</em> de mem en dst (no el valor)</td></tr>
+    <tr><td>SHL / SHR</td><td><code>SHL reg, n</code></td><td>Shift left/right n bits (mult/div por 2ⁿ)</td></tr>
+  </table>
+
+  <p style="margin-top:12px"><strong>Ejemplo completo: función factorial iterativa</strong></p>
+  <div class="code-box">; int factorial(int n) { int r=1; while(n>1) { r*=n; n--; } return r; }
+
+section .text
+global factorial
+factorial:
+    push rbp
+    mov  rbp, rsp        ; establece marco de pila
+
+    mov  ecx, edi        ; n → ECX (primer argumento en EDI)
+    mov  eax, 1          ; r = 1 (resultado en EAX)
+
+.loop:
+    cmp  ecx, 1          ; n > 1 ?
+    jle  .done           ; si no, terminar
+
+    imul eax, ecx        ; r = r * n
+    dec  ecx             ; n = n - 1
+    jmp  .loop           ; repetir
+
+.done:
+    pop  rbp
+    ret                  ; retorna EAX (valor de r)</div>
+
+  <div class="info-note"><span class="note-icon">🔧</span><span>El <strong>ABI (Application Binary Interface)</strong> define las convenciones de llamada: qué registros guardan los argumentos, cuál guarda el retorno, y cuáles deben preservarse entre llamadas. En Linux x86-64 (System V ABI): argumentos en RDI, RSI, RDX, RCX, R8, R9; retorno en RAX.</span></div>
+</div>
+
+<!-- 4.3 Lenguaje máquina -->
+<div class="card" style="--ci:4">
+  <div class="card-title">📌 4.3 Lenguaje Máquina</div>
+  <p>El <strong>lenguaje máquina</strong> es la representación binaria que la CPU ejecuta directamente. Cada instrucción se codifica como una secuencia de bytes según el <em>conjunto de instrucciones</em> (ISA) de la arquitectura.</p>
+
+  <p style="margin-top:10px"><strong>Estructura de una instrucción x86:</strong></p>
+  <div class="tree-box">┌───────────┬──────────┬────────────┬──────────────┬──────────────┐
+│  Prefijos │  Opcode  │  ModRM/SIB │ Desplazam.   │  Inmediato   │
+│ (0-4 bytes│ (1-3 bytes│ (0-2 bytes)│ (0,1,2,4 B)  │ (0,1,2,4 B)  │
+└───────────┴──────────┴────────────┴──────────────┴──────────────┘</div>
+
+  <table class="data-table">
+    <tr><th>Ensamblador</th><th>Código máquina (hex)</th><th>Descripción</th></tr>
+    <tr><td><code>NOP</code></td><td><code>90</code></td><td>No operación (1 byte)</td></tr>
+    <tr><td><code>RET</code></td><td><code>C3</code></td><td>Retorno de función</td></tr>
+    <tr><td><code>MOV EAX, 5</code></td><td><code>B8 05 00 00 00</code></td><td>Carga inmediato 5 en EAX</td></tr>
+    <tr><td><code>ADD EAX, EBX</code></td><td><code>01 D8</code></td><td>Suma EBX a EAX</td></tr>
+    <tr><td><code>PUSH RBP</code></td><td><code>55</code></td><td>Empuja RBP a la pila</td></tr>
+    <tr><td><code>MOV RBP, RSP</code></td><td><code>48 89 E5</code></td><td>Copia RSP en RBP (64 bits)</td></tr>
+    <tr><td><code>JMP +10</code></td><td><code>EB 0A</code></td><td>Salto relativo +10 bytes</td></tr>
+    <tr><td><code>CALL proc</code></td><td><code>E8 XX XX XX XX</code></td><td>Llama a proc (offset 32 bits)</td></tr>
+  </table>
+
+  <p style="margin-top:12px"><strong>Proceso de generación:</strong></p>
+  <div class="steps-list">
+    <li><strong>Selección de instrucción:</strong> mapear cada cuádruplo a una o más instrucciones máquina de la ISA destino</li>
+    <li><strong>Resolución de etiquetas:</strong> calcular los offsets reales de los saltos y llamadas</li>
+    <li><strong>Generación de código relocatable:</strong> crear el archivo .o con símbolos pendientes de enlace</li>
+    <li><strong>Enlace (linker):</strong> resolver referencias entre módulos y generar el ejecutable final</li>
+  </div>
+
+  <div class="compare-grid">
+    <div class="compare-col">
+      <div class="compare-title">RISC (ARM, RISC-V)</div>
+      <ul>
+        <li>Instrucciones de tamaño fijo (32 bits)</li>
+        <li>Pocas instrucciones, muy regulares</li>
+        <li>Load/Store: solo estas tocan memoria</li>
+        <li>Muchos registros (32)</li>
+        <li>Más instrucciones, más simple de compilar</li>
+      </ul>
+    </div>
+    <div class="compare-col">
+      <div class="compare-title">CISC (x86-64)</div>
+      <ul>
+        <li>Instrucciones de tamaño variable (1-15 bytes)</li>
+        <li>Muchas instrucciones especializadas</li>
+        <li>Operandos en memoria directamente</li>
+        <li>Pocos registros (16)</li>
+        <li>Menos instrucciones en código, más complejo</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- 4.4 Administración de memoria -->
+<div class="card" style="--ci:5">
+  <div class="card-title">📌 4.4 Administración de Memoria</div>
+  <p>El compilador organiza el espacio de memoria del proceso en <strong>segmentos</strong> con propósitos distintos:</p>
+
+  <div class="memory-map">
+    <div class="mem-row">
+      <div class="mem-label">Alta dirección</div>
+      <div class="mem-desc">Argumentos del sistema y variables de entorno</div>
+    </div>
+    <div class="mem-row">
+      <div class="mem-label">Stack ↓</div>
+      <div class="mem-desc">Variables locales, parámetros, dirección de retorno, registros salvados. Crece hacia abajo.</div>
+    </div>
+    <div class="mem-row">
+      <div class="mem-label">↑ Heap</div>
+      <div class="mem-desc">Memoria dinámica (malloc/new/free). Crece hacia arriba. El programador la gestiona.</div>
+    </div>
+    <div class="mem-row">
+      <div class="mem-label">BSS</div>
+      <div class="mem-desc">Variables globales y estáticas <strong>no inicializadas</strong>. Ocupan cero bytes en el binario.</div>
+    </div>
+    <div class="mem-row">
+      <div class="mem-label">.data</div>
+      <div class="mem-desc">Variables globales y estáticas <strong>inicializadas</strong>. Ej: <code>int x = 5;</code></div>
+    </div>
+    <div class="mem-row">
+      <div class="mem-label">.rodata</div>
+      <div class="mem-desc">Datos de solo lectura: literales de cadena, constantes. Ej: <code>"Hola"</code></div>
+    </div>
+    <div class="mem-row">
+      <div class="mem-label">.text</div>
+      <div class="mem-desc">Instrucciones del programa (código máquina). Solo lectura y ejecución.</div>
+    </div>
+    <div class="mem-row">
+      <div class="mem-label">Baja dirección</div>
+      <div class="mem-desc">Dirección 0x000000 (no mapeada, acceso = segfault)</div>
+    </div>
+  </div>
+
+  <p style="margin-top:14px"><strong>Marco de activación (Activation Record / Stack Frame):</strong></p>
+  <p>Cada llamada a función crea un frame en la pila con esta estructura:</p>
+  <div class="tree-box">Dirección alta
+┌─────────────────────────────┐
+│ Argumentos extra (si > 6)   │ ← pasados por la función llamadora
+├─────────────────────────────┤
+│ Dirección de retorno (RIP)  │ ← guardada por CALL
+├─────────────────────────────┤  ← RBP apunta aquí
+│ Viejo RBP (frame anterior)  │ ← guardado por el prólogo
+├─────────────────────────────┤
+│ Variables locales           │ ← asignadas por el compilador
+├─────────────────────────────┤
+│ Registros salvados          │ ← los que el callee debe preservar
+└─────────────────────────────┘  ← RSP apunta aquí
+Dirección baja</div>
+
+  <div class="code-box">/* Prólogo estándar de función (x86-64) */
+push rbp           ; guarda el frame pointer anterior
+mov  rbp, rsp      ; establece el nuevo frame pointer
+sub  rsp, 32       ; reserva 32 bytes para variables locales
+
+/* Epílogo estándar */
+mov  rsp, rbp      ; restaura el stack pointer
+pop  rbp           ; restaura el frame pointer anterior
+ret                ; regresa al llamador</div>
+
+  <p style="margin-top:12px"><strong>Estrategias de administración del heap:</strong></p>
+  <table class="data-table">
+    <tr><th>Estrategia</th><th>Descripción</th><th>Ventaja</th></tr>
+    <tr><td>First Fit</td><td>Asigna el primer bloque libre suficientemente grande</td><td>Rápido</td></tr>
+    <tr><td>Best Fit</td><td>Asigna el bloque libre más pequeño que sea suficiente</td><td>Menos desperdicio</td></tr>
+    <tr><td>Buddy System</td><td>Divide la memoria en potencias de 2</td><td>Fácil de fusionar fragmentos</td></tr>
+    <tr><td>Garbage Collection</td><td>El runtime libera automáticamente la memoria no usada</td><td>Sin memory leaks</td></tr>
+  </table>
+</div>
+
+<!-- Conclusión -->
+<div class="card highlight" style="--ci:6">
+  <div class="card-title">🧠 Conclusión</div>
+  <p>La generación de código objeto es donde el compilador toca el hardware real. Dominar esta fase implica entender la arquitectura del procesador destino: su ISA, sus registros, sus convenciones de llamada y su modelo de memoria. El compilador debe tomar decisiones críticas de asignación de registros, selección de instrucciones y gestión de la pila para producir código correcto y eficiente que la CPU pueda ejecutar directamente.</p>
+  <div class="mini-tags">
+    <span>Registros</span><span>Ensamblador</span><span>Código Máquina</span><span>Stack Frame</span><span>Heap</span><span>ABI</span><span>ISA</span>
+  </div>
+</div>
+
+</div>

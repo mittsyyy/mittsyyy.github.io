@@ -1,0 +1,235 @@
+<div class="unit-hero">
+  <h1>Unidad 2</h1>
+  <h2>Generación de Código Intermedio</h2>
+  <p class="unit-meta">Lenguajes y Autómatas II · Ingeniería en Sistemas Computacionales<br><strong>Mittsy Andazola Antillón</strong></p>
+</div>
+<div class="unit-content">
+
+<!-- Introducción -->
+<div class="card" style="--ci:1">
+  <div class="card-title">🎯 Introducción</div>
+  <p>La <strong>generación de código intermedio</strong> transforma el árbol sintáctico anotado (resultado del análisis semántico) en una representación abstracta e <em>independiente de la máquina destino</em>. Esta capa intermedia tiene dos grandes ventajas:</p>
+  <div class="compare-grid">
+    <div class="compare-col">
+      <div class="compare-title">🔄 Portabilidad</div>
+      <ul>
+        <li>El mismo front-end sirve para múltiples arquitecturas</li>
+        <li>Solo se reemplaza el back-end por cada CPU target</li>
+        <li>Principio del compilador multi-plataforma (LLVM, GCC)</li>
+      </ul>
+    </div>
+    <div class="compare-col">
+      <div class="compare-title">⚡ Optimización</div>
+      <ul>
+        <li>Es más fácil optimizar código intermedio que ensamblador</li>
+        <li>Permite análisis globales de flujo</li>
+        <li>Independencia del hardware facilita transformaciones</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- 2.1 Notaciones -->
+<div class="card" style="--ci:2">
+  <div class="card-title">📌 2.1 Notaciones: Prefija, Infija y Postfija</div>
+  <p>Toda expresión puede escribirse en tres notaciones distintas según la posición del operador respecto a sus operandos:</p>
+  <table class="data-table">
+    <tr><th>Notación</th><th>Posición del operador</th><th>Ejemplo: a + b * c</th><th>Ventaja</th></tr>
+    <tr><td><strong>Infija</strong></td><td>Entre operandos</td><td><code>a + b * c</code></td><td>Legible para humanos</td></tr>
+    <tr><td><strong>Prefija</strong> (Polaca)</td><td>Antes de operandos</td><td><code>+ a * b c</code></td><td>Sin paréntesis, evaluación directa</td></tr>
+    <tr><td><strong>Postfija</strong> (Polaca Inversa)</td><td>Después de operandos</td><td><code>a b c * +</code></td><td>Ideal para máquinas de pila</td></tr>
+  </table>
+  <p style="margin-top:12px"><strong>Conversión de infija a postfija</strong> usando el algoritmo de pila (Shunting-yard de Dijkstra):</p>
+  <div class="code-box">Expresión: (a + b) * (c - d)
+
+Paso a paso:
+  Leer 'a'   → salida: a
+  Leer '+'   → pila: [+]
+  Leer 'b'   → salida: a b
+  Leer ')'   → salida: a b +     (vaciar hasta '(')
+  Leer '*'   → pila: [*]
+  Leer 'c'   → salida: a b + c
+  Leer '-'   → pila: [*, -]
+  Leer 'd'   → salida: a b + c d
+  Fin        → salida: a b + c d - *
+
+Resultado postfijo: a b + c d - *</div>
+  <div class="info-note"><span class="note-icon">💡</span><span>La notación <strong>postfija</strong> es la más usada internamente en compiladores porque se evalúa linealmente con una pila, sin necesidad de retroceder.</span></div>
+</div>
+
+<!-- 2.2 Representaciones -->
+<div class="card" style="--ci:3">
+  <div class="card-title">📌 2.2 Representaciones de Código Intermedio</div>
+
+  <div class="section-badge">2.2.1 Notación Polaca</div>
+  <p>La <strong>notación polaca inversa (RPN)</strong> usa una pila para evaluar. Cada operando se apila; al encontrar un operador se extraen los operandos y se apila el resultado.</p>
+  <div class="code-box">Código fuente: z = x + y * 2
+
+Postfija: x y 2 * + z =
+
+Evaluación con pila:
+  Push x  → [x]
+  Push y  → [x, y]
+  Push 2  → [x, y, 2]
+  *       → [x, y*2]
+  +       → [x + y*2]
+  z =     → z recibe el valor</div>
+
+  <div class="section-badge" style="margin-top:14px">2.2.2 Código P</div>
+  <p>El <strong>Código P</strong> (P-code) es un lenguaje de bajo nivel abstracto diseñado para una máquina de pila virtual. Fue popularizado por el compilador de Pascal. Sus instrucciones principales:</p>
+  <table class="data-table">
+    <tr><th>Instrucción</th><th>Significado</th></tr>
+    <tr><td><code>LOD n, a</code></td><td>Carga el valor de la variable en dirección a, nivel n</td></tr>
+    <tr><td><code>STO n, a</code></td><td>Almacena el tope de pila en la dirección a</td></tr>
+    <tr><td><code>LIT 0, v</code></td><td>Apila el valor literal v</td></tr>
+    <tr><td><code>OPR 0, op</code></td><td>Aplica operación aritmética/lógica</td></tr>
+    <tr><td><code>JMP 0, a</code></td><td>Salto incondicional a dirección a</td></tr>
+    <tr><td><code>JPC 0, a</code></td><td>Salto si el tope de pila es falso</td></tr>
+    <tr><td><code>CAL n, a</code></td><td>Llama procedimiento en dirección a</td></tr>
+  </table>
+  <div class="code-box">/* Código fuente: if x > 0 then y := x * 2 */
+
+Código P generado:
+  LOD 0, x    ; carga x
+  LIT 0, 0    ; carga constante 0
+  OPR 0, 12   ; operación ">"
+  JPC 0, fin  ; si falso, salta a fin
+  LOD 0, x    ; carga x
+  LIT 0, 2    ; carga 2
+  OPR 0, 4    ; operación "*"
+  STO 0, y    ; guarda en y
+fin:</div>
+
+  <div class="section-badge" style="margin-top:14px">2.2.3 Triples</div>
+  <p>En los <strong>triples</strong>, cada instrucción tiene forma <code>(operador, arg1, arg2)</code>. El resultado NO se almacena en un temporal explícito; se referencia por el <em>número de instrucción</em>.</p>
+  <div class="code-box">Expresión: a = b * c + b * c
+
+(0)  *  b  c        ← calcula b*c, resultado = posición (0)
+(1)  *  b  c        ← calcula b*c, resultado = posición (1)
+(2)  +  (0) (1)     ← suma los resultados anteriores
+(3)  =  a  (2)      ← asigna a 'a'</div>
+  <p>⚠️ Problema: si se reordenan instrucciones durante optimización, las referencias numéricas se invalidan.</p>
+
+  <div class="section-badge" style="margin-top:14px">2.2.4 Cuádruplos</div>
+  <p>Los <strong>cuádruplos</strong> tienen forma <code>(operador, arg1, arg2, resultado)</code>. El resultado es un temporal explícito, lo que los hace más robustos para optimización.</p>
+  <table class="data-table">
+    <tr><th>#</th><th>Op</th><th>Arg1</th><th>Arg2</th><th>Resultado</th></tr>
+    <tr><td>0</td><td><code>*</code></td><td>b</td><td>c</td><td>t1</td></tr>
+    <tr><td>1</td><td><code>*</code></td><td>b</td><td>c</td><td>t2</td></tr>
+    <tr><td>2</td><td><code>+</code></td><td>t1</td><td>t2</td><td>t3</td></tr>
+    <tr><td>3</td><td><code>=</code></td><td>t3</td><td>—</td><td>a</td></tr>
+  </table>
+  <div class="compare-grid">
+    <div class="compare-col">
+      <div class="compare-title">Triples</div>
+      <ul>
+        <li>Menos espacio (no guarda nombre de temp)</li>
+        <li>Difícil de reordenar</li>
+        <li>Referencia por posición</li>
+      </ul>
+    </div>
+    <div class="compare-col">
+      <div class="compare-title">Cuádruplos ✅ preferidos</div>
+      <ul>
+        <li>Más espacio</li>
+        <li>Fácil de reordenar para optimización</li>
+        <li>Temporales explícitos y nombrados</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- 2.3 Estructuras de generación -->
+<div class="card" style="--ci:4">
+  <div class="card-title">📌 2.3 Estructuras de Generación</div>
+
+  <div class="section-badge">2.3.1 Variables y Constantes</div>
+  <table class="data-table">
+    <tr><th>Entidad</th><th>Código generado</th><th>Ejemplo</th></tr>
+    <tr><td>Variable</td><td><code>LOD nombre</code></td><td><code>x</code> → <code>LOD x</code></td></tr>
+    <tr><td>Constante entera</td><td>Valor directo en cuádruplo</td><td><code>5</code> → arg = 5</td></tr>
+    <tr><td>Constante flotante</td><td>Valor en tabla de constantes</td><td><code>3.14</code> → ref a tabla</td></tr>
+  </table>
+
+  <div class="section-badge" style="margin-top:14px">2.3.2 Expresiones</div>
+  <p>Cada subexpresión genera un temporal. Se evalúa el árbol en postorden:</p>
+  <div class="code-box">Expresión: (a + b) * (c - d)
+
+Cuádruplos:
+  t1 = a + b
+  t2 = c - d
+  t3 = t1 * t2</div>
+
+  <div class="section-badge" style="margin-top:14px">2.3.3 Instrucción de Asignación</div>
+  <div class="code-box">Código fuente: x = a * b + c
+
+Cuádruplos:
+  t1 = a * b
+  t2 = t1 + c
+  x  = t2</div>
+
+  <div class="section-badge" style="margin-top:14px">2.3.4 Instrucciones de Control</div>
+  <p><strong>if-else:</strong></p>
+  <div class="code-box">Código fuente:
+  if (a > b) x = 1; else x = 2;
+
+Cuádruplos:
+  t1 = a > b
+  if_false t1 goto L1
+  x = 1
+  goto L2
+L1: x = 2
+L2: ...</div>
+  <p style="margin-top:8px"><strong>while:</strong></p>
+  <div class="code-box">Código fuente: while (i < n) i = i + 1;
+
+Cuádruplos:
+L1: t1 = i < n
+    if_false t1 goto L2
+    t2 = i + 1
+    i  = t2
+    goto L1
+L2: ...</div>
+
+  <div class="section-badge" style="margin-top:14px">2.3.5 Funciones</div>
+  <table class="data-table">
+    <tr><th>Instrucción</th><th>Significado</th></tr>
+    <tr><td><code>param x</code></td><td>Pasa el argumento x a la función</td></tr>
+    <tr><td><code>call f, n</code></td><td>Llama a la función f con n argumentos</td></tr>
+    <tr><td><code>return v</code></td><td>Retorna el valor v al llamador</td></tr>
+    <tr><td><code>t = call f, n</code></td><td>Llama y guarda el valor de retorno en t</td></tr>
+  </table>
+  <div class="code-box">/* int suma(int a, int b) { return a + b; } */
+/* Llamada: resultado = suma(3, 4) */
+
+param 3
+param 4
+resultado = call suma, 2
+
+/* Cuerpo de suma: */
+t1 = a + b
+return t1</div>
+
+  <div class="section-badge" style="margin-top:14px">2.3.6 Estructuras (arreglos y registros)</div>
+  <p><strong>Arreglos:</strong> el acceso <code>A[i]</code> requiere calcular la dirección: <code>dir = base_A + i * tamaño_elemento</code></p>
+  <div class="code-box">/* A[i] = 5 */
+t1 = i * 4        ; 4 bytes por entero
+t2 = &A + t1      ; dirección de A[i]
+*t2 = 5           ; almacena 5 en A[i]</div>
+  <p style="margin-top:8px"><strong>Registros/structs:</strong> el campo se accede sumando el desplazamiento fijo al puntero base.</p>
+  <div class="code-box">/* struct Persona { int edad; float salario; } p; */
+/* p.salario → offset de salario = 4 bytes (después de edad) */
+t1 = &p + 4
+t2 = *t1        ; valor de p.salario</div>
+</div>
+
+<!-- Conclusión -->
+<div class="card highlight" style="--ci:5">
+  <div class="card-title">🧠 Conclusión</div>
+  <p>La generación de código intermedio es el corazón del compilador. Los cuádruplos son la representación más usada en la práctica porque equilibran expresividad y facilidad de optimización. Cada estructura del lenguaje fuente —desde una suma hasta una llamada a función— se traduce en una secuencia de operaciones simples de tres direcciones que cualquier back-end puede traducir a ensamblador.</p>
+  <div class="mini-tags">
+    <span>Cuádruplos</span><span>Triples</span><span>Código P</span><span>Postfija</span><span>Temporales</span><span>Etiquetas</span>
+  </div>
+</div>
+
+</div>

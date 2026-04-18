@@ -1,136 +1,215 @@
-<link rel="stylesheet" href="../css/styles.css">
 <div class="unit-hero">
   <h1>Unidad 1</h1>
   <h2>Análisis Semántico</h2>
-  <p class="unit-meta">
-    Lenguajes y Autómatas II · Ingeniería en Sistemas Computacionales  
-    <br>
-    <strong>Mittsy Andazola Antillón</strong>
-  </p>
+  <p class="unit-meta">Lenguajes y Autómatas II · Ingeniería en Sistemas Computacionales<br><strong>Mittsy Andazola Antillón</strong></p>
 </div>
-
 <div class="unit-content">
 
-  <div class="card" style="--ci:1">
-    <div class="card-title">🎯 Introducción</div>
-    <p>
-      El análisis semántico es una fase fundamental del proceso de compilación.
-      Después del análisis léxico y sintáctico, el compilador verifica que el
-      programa tenga coherencia lógica y compatibilidad de tipos antes de generar código.
-    </p>
+<!-- Introducción -->
+<div class="card" style="--ci:1">
+  <div class="card-title">🎯 Introducción al Análisis Semántico</div>
+  <p>El análisis semántico es la <strong>tercera fase</strong> del proceso de compilación. Después de que el analizador léxico tokeniza el código y el analizador sintáctico valida su estructura gramatical, el analizador semántico verifica que el programa tenga <em>coherencia lógica y de tipos</em>.</p>
+  <div class="info-note"><span class="note-icon">💡</span><span>Un programa puede ser sintácticamente correcto pero semánticamente inválido. Ejemplo: <code>int x = "hola";</code> tiene sintaxis correcta pero es un error semántico de tipos.</span></div>
+  <div class="steps-list" style="margin-top:14px">
+    <li>Verificar compatibilidad de tipos en expresiones y asignaciones</li>
+    <li>Comprobar que los identificadores sean declarados antes de usarse</li>
+    <li>Validar parámetros en llamadas a funciones</li>
+    <li>Construir la tabla de símbolos con atributos de cada variable</li>
+    <li>Preparar la información para la generación de código intermedio</li>
   </div>
+</div>
 
-  <div class="card" style="--ci:2">
-    <div class="card-title">📌 1.1 Árboles de Expresiones</div>
-    <p>
-      Representan la estructura jerárquica de una expresión matemática o lógica,
-      respetando la precedencia de operadores.
-    </p>
-
-    <div class="code-box">
-      a + b * c
+<!-- 1.1 Árboles de expresiones -->
+<div class="card" style="--ci:2">
+  <div class="card-title">📌 1.1 Árboles de Expresiones</div>
+  <p>Un <strong>árbol de expresión</strong> es una representación jerárquica de una expresión matemática o lógica, donde:</p>
+  <ul class="unit-list">
+    <li>Los <strong>nodos internos</strong> son operadores (+, -, *, /)</li>
+    <li>Las <strong>hojas</strong> son operandos (variables, constantes)</li>
+    <li>La estructura refleja la <strong>precedencia de operadores</strong> automáticamente</li>
+  </ul>
+  <p style="margin-top:10px"><strong>Ejemplo:</strong> La expresión <code>a + b * c - d</code> se representa así:</p>
+  <div class="tree-box">          -
+         / \
+        +   d
+       / \
+      a   *
+         / \
+        b   c</div>
+  <p style="margin-top:10px">La evaluación se hace en <strong>postorden</strong> (hojas primero, raíz al final), lo que garantiza respetar la precedencia sin paréntesis.</p>
+  <div class="compare-grid">
+    <div class="compare-col">
+      <div class="compare-title">✅ Ventajas</div>
+      <ul>
+        <li>Eliminan ambigüedad</li>
+        <li>Facilitan la evaluación semántica</li>
+        <li>Base para código intermedio</li>
+        <li>Permiten optimizaciones locales</li>
+      </ul>
     </div>
-
-    <ul class="unit-list">
-      <li>Representan precedencia de operadores</li>
-      <li>Facilitan evaluación semántica</li>
-      <li>Base para generación de código intermedio</li>
-    </ul>
-  </div>
-
-  <div class="card" style="--ci:3">
-    <div class="card-title">📌 1.2 Acciones Semánticas</div>
-    <p>
-      Instrucciones que se ejecutan cuando el analizador sintáctico reconoce
-      una producción gramatical.
-    </p>
-
-    <ul class="unit-list">
-      <li>Verificación de tipos</li>
-      <li>Construcción de tabla de símbolos</li>
-      <li>Generación de código intermedio</li>
-    </ul>
-
-    <div class="mini-tags">
-      <span>Push</span>
-      <span>Pop</span>
-      <span>Top</span>
+    <div class="compare-col">
+      <div class="compare-title">🔧 Usos prácticos</div>
+      <ul>
+        <li>Verificación de tipos</li>
+        <li>Generación de cuádruplos</li>
+        <li>Evaluación de constantes</li>
+        <li>Simplificación algebraica</li>
+      </ul>
     </div>
   </div>
+</div>
 
-  <div class="card" style="--ci:4">
-    <div class="card-title">📌 1.3 Comprobación de Tipos</div>
+<!-- 1.2 Acciones semánticas -->
+<div class="card" style="--ci:3">
+  <div class="card-title">📌 1.2 Acciones Semánticas de un Analizador Sintáctico</div>
+  <p>Las <strong>acciones semánticas</strong> son fragmentos de código que se ejecutan cuando el parser reconoce una producción gramatical. Se insertan dentro de la gramática usando notación <code>{ acción }</code>.</p>
+  <div class="code-box">/* Gramática con acción semántica */
+E → E1 + T   { E.tipo = verificar(E1.tipo, T.tipo, '+') }
+E → T        { E.tipo = T.tipo }
+T → id       { T.tipo = tablaSimbolos.buscar(id.nombre).tipo }</div>
+  <p style="margin-top:10px">Los atributos pueden ser:</p>
+  <table class="data-table">
+    <tr><th>Tipo</th><th>Descripción</th><th>Flujo</th></tr>
+    <tr><td><strong>Sintetizados</strong></td><td>Se calculan desde los hijos hacia el padre</td><td>↑ Ascendente</td></tr>
+    <tr><td><strong>Heredados</strong></td><td>Se pasan del padre hacia los hijos</td><td>↓ Descendente</td></tr>
+  </table>
+  <div class="info-note" style="margin-top:12px"><span class="note-icon">📝</span><span>En parsers LR (ascendentes), las acciones semánticas se ejecutan al hacer <em>reduce</em>. En parsers LL (descendentes recursivos), se ejecutan durante la derivación.</span></div>
+</div>
 
-    <div class="code-box">
-      int a = 5 + 3; ✔ Correcto
+<!-- 1.3 Comprobación de tipos -->
+<div class="card" style="--ci:4">
+  <div class="card-title">📌 1.3 Comprobaciones de Tipos en Expresiones</div>
+  <p>El <strong>sistema de tipos</strong> del compilador garantiza que cada operación reciba operandos del tipo correcto.</p>
+  <table class="data-table">
+    <tr><th>Situación</th><th>Ejemplo</th><th>Resultado</th></tr>
+    <tr><td>Tipos compatibles</td><td><code>int + int</code></td><td>✅ int</td></tr>
+    <tr><td>Coerción implícita</td><td><code>int + float</code></td><td>✅ float (promoción)</td></tr>
+    <tr><td>Error de tipo</td><td><code>int + string</code></td><td>❌ Error semántico</td></tr>
+    <tr><td>Asignación válida</td><td><code>float x = 5;</code></td><td>✅ (5 → 5.0)</td></tr>
+    <tr><td>Asignación inválida</td><td><code>int x = 3.7;</code></td><td>⚠️ Advertencia/Error</td></tr>
+  </table>
+  <div class="code-box">/* Función de verificación de tipos */
+function verificarTipos(op1, op2, operador):
+  si op1 == "int" y op2 == "int":
+    retornar "int"
+  si op1 == "float" o op2 == "float":
+    retornar "float"   // promoción automática
+  si op1 != op2:
+    lanzarError("Tipos incompatibles: " + op1 + " y " + op2)</div>
+  <div class="mini-tags">
+    <span>int</span><span>float</span><span>char</span><span>bool</span><span>string</span><span>void</span>
+  </div>
+</div>
+
+<!-- 1.4 Pila semántica -->
+<div class="card" style="--ci:5">
+  <div class="card-title">📌 1.4 Pila Semántica en un Analizador Sintáctico</div>
+  <p>En los analizadores <strong>LR</strong>, además de la pila de estados, existe una <strong>pila semántica</strong> paralela que almacena los atributos de cada símbolo.</p>
+  <div class="compare-grid">
+    <div class="compare-col">
+      <div class="compare-title">Pila de estados (LR)</div>
+      <ul>
+        <li>Contiene números de estado</li>
+        <li>Guía las acciones shift/reduce</li>
+        <li>Determina qué regla aplicar</li>
+      </ul>
     </div>
-
-    <div class="code-box error">
-      int a = "hola" + 5; ✖ Error
+    <div class="compare-col">
+      <div class="compare-title">Pila semántica</div>
+      <ul>
+        <li>Contiene valores/atributos</li>
+        <li>Se sincroniza con la pila LR</li>
+        <li>Acumula resultados parciales</li>
+      </ul>
     </div>
-
-    <ul class="unit-list">
-      <li>Compatibilidad de tipos</li>
-      <li>Conversión implícita</li>
-      <li>Promoción de tipos</li>
-    </ul>
   </div>
+  <p style="margin-top:12px"><strong>Ejemplo de evaluación de <code>3 + 4 * 2</code>:</strong></p>
+  <table class="data-table">
+    <tr><th>Paso</th><th>Acción</th><th>Pila semántica</th></tr>
+    <tr><td>1</td><td>Shift 3</td><td>[3]</td></tr>
+    <tr><td>2</td><td>Shift 4</td><td>[3, 4]</td></tr>
+    <tr><td>3</td><td>Shift 2</td><td>[3, 4, 2]</td></tr>
+    <tr><td>4</td><td>Reduce E→E*E</td><td>[3, 8]</td></tr>
+    <tr><td>5</td><td>Reduce E→E+E</td><td>[11]</td></tr>
+  </table>
+  <div class="mini-tags"><span>Push</span><span>Pop</span><span>Top</span><span>Reduce</span><span>Shift</span></div>
+</div>
 
-  <div class="card" style="--ci:5">
-    <div class="card-title">📌 1.4 Pila Semántica</div>
-    <p>
-      Almacena identificadores, tipos y valores temporales durante el análisis LR.
-      Permite mantener coherencia entre símbolos y tipos.
-    </p>
+<!-- 1.5 Esquema de traducción -->
+<div class="card" style="--ci:6">
+  <div class="card-title">📌 1.5 Esquema de Traducción</div>
+  <p>Un <strong>esquema de traducción</strong> (SDT – Syntax-Directed Translation) combina reglas gramaticales con acciones semánticas embebidas. Las acciones entre <code>{ }</code> se ejecutan en el momento en que aparecen dentro de la derivación.</p>
+  <div class="code-box">/* Esquema de traducción para expresiones aritméticas */
+E → E1 + T   { E.val = E1.val + T.val;
+               gen("ADD", E1.lugar, T.lugar, nuevoTemp()) }
+E → E1 - T   { E.val = E1.val - T.val;
+               gen("SUB", E1.lugar, T.lugar, nuevoTemp()) }
+T → T1 * F   { T.val = T1.val * F.val;
+               gen("MUL", T1.lugar, F.lugar, nuevoTemp()) }
+T → F        { T.val = F.val; T.lugar = F.lugar }
+F → ( E )    { F.val = E.val; F.lugar = E.lugar }
+F → num      { F.val = num.lexval; F.lugar = num.lexval }</div>
+  <div class="def-block">
+    <div class="def-term">Gramática atribuida (AG)</div>
+    <div class="def-desc">Cuando las acciones semánticas solo aparecen al final de cada producción. Más restrictiva pero más fácil de implementar.</div>
   </div>
-
-  <div class="card" style="--ci:6">
-    <div class="card-title">📌 1.5 Esquema de Traducción</div>
-
-    <div class="code-box">
-      E → E1 + T { E.valor = E1.valor + T.valor }
-    </div>
-
-    <p>
-      Combina reglas gramaticales con acciones semánticas para dar significado
-      a cada producción.
-    </p>
+  <div class="def-block">
+    <div class="def-term">Esquema de traducción (SDT)</div>
+    <div class="def-desc">Las acciones pueden aparecer en cualquier posición de la producción. Más flexible, permite atributos heredados.</div>
   </div>
+</div>
 
-  <div class="card" style="--ci:7">
-    <div class="card-title">📌 1.6 Tabla de Símbolos</div>
+<!-- 1.6 Tabla de símbolos -->
+<div class="card" style="--ci:7">
+  <div class="card-title">📌 1.6 Generación de la Tabla de Símbolos y de Direcciones</div>
+  <p>La <strong>tabla de símbolos</strong> es la estructura central del compilador. Almacena toda la información relevante de cada identificador declarado en el programa.</p>
+  <table class="data-table">
+    <tr><th>Nombre</th><th>Tipo</th><th>Ámbito</th><th>Dirección</th><th>Valor</th></tr>
+    <tr><td><code>x</code></td><td>int</td><td>global</td><td>0x1000</td><td>-</td></tr>
+    <tr><td><code>pi</code></td><td>float</td><td>global</td><td>0x1004</td><td>3.14</td></tr>
+    <tr><td><code>suma</code></td><td>función</td><td>global</td><td>0x2000</td><td>-</td></tr>
+    <tr><td><code>a</code></td><td>int</td><td>suma</td><td>SP+4</td><td>-</td></tr>
+    <tr><td><code>b</code></td><td>int</td><td>suma</td><td>SP+8</td><td>-</td></tr>
+    <tr><td><code>res</code></td><td>int</td><td>suma</td><td>SP+12</td><td>-</td></tr>
+  </table>
+  <p style="margin-top:12px"><strong>Asignación de direcciones:</strong></p>
+  <ul class="unit-list">
+    <li><strong>Variables globales:</strong> dirección fija en el segmento de datos (ej. 0x1000)</li>
+    <li><strong>Variables locales:</strong> desplazamiento relativo al puntero de pila (SP + offset)</li>
+    <li><strong>Parámetros:</strong> se colocan antes del frame pointer al llamar la función</li>
+    <li><strong>Temporales:</strong> se asignan dinámicamente conforme se generan</li>
+  </ul>
+  <div class="info-note"><span class="note-icon">🗂️</span><span>En lenguajes con ámbitos anidados (como C o Pascal), se usa una <strong>pila de tablas de símbolos</strong>: una tabla por cada bloque o función activa.</span></div>
+</div>
 
-    <div class="table-box">
-      <div>x | int | global | 1000</div>
-    </div>
+<!-- 1.7 Manejo de errores semánticos -->
+<div class="card" style="--ci:8">
+  <div class="card-title">📌 1.7 Manejo de Errores Semánticos</div>
+  <p>Los errores semánticos <em>no impiden que el programa tenga sintaxis válida</em>, pero sí impiden que sea correcto lógicamente.</p>
+  <table class="data-table">
+    <tr><th>Tipo de error</th><th>Ejemplo</th><th>Mensaje típico</th></tr>
+    <tr><td>Variable no declarada</td><td><code>y = 10;</code></td><td>"y" no fue declarada</td></tr>
+    <tr><td>Tipos incompatibles</td><td><code>int x = "hi";</code></td><td>No se puede asignar string a int</td></tr>
+    <tr><td>Redeclaración</td><td><code>int x; int x;</code></td><td>"x" ya fue declarada en este ámbito</td></tr>
+    <tr><td>Argumentos incorrectos</td><td><code>suma(1,2,3)</code></td><td>Se esperaban 2 argumentos, se dieron 3</td></tr>
+    <tr><td>Retorno incorrecto</td><td><code>int f(){ return "a"; }</code></td><td>Tipo de retorno no coincide</td></tr>
+    <tr><td>División por cero constante</td><td><code>int x = 5/0;</code></td><td>División por cero en tiempo de compilación</td></tr>
+  </table>
+  <p style="margin-top:12px"><strong>Estrategias de recuperación:</strong></p>
+  <ul class="unit-list">
+    <li><strong>Modo pánico:</strong> descartar tokens hasta encontrar un punto de sincronización (punto y coma, fin de bloque)</li>
+    <li><strong>Corrección local:</strong> intentar corregir el error (asumir un tipo por defecto)</li>
+    <li><strong>Continuar y acumular:</strong> reportar el error, continuar el análisis y reportar todos los errores al final</li>
+  </ul>
+</div>
 
-    <p>
-      Almacena información de identificadores, tipo, ámbito y dirección en memoria.
-    </p>
+<!-- Conclusión -->
+<div class="card highlight" style="--ci:9">
+  <div class="card-title">🧠 Conclusión</div>
+  <p>El análisis semántico cierra la brecha entre la <em>forma</em> (sintaxis) y el <em>significado</em> (semántica) de un programa. Gracias a la tabla de símbolos, los árboles de expresión y las acciones semánticas, el compilador puede detectar errores lógicos, gestionar tipos correctamente y preparar toda la información necesaria para la generación de código intermedio y código objeto.</p>
+  <div class="mini-tags">
+    <span>Tipos</span><span>Ámbitos</span><span>Tabla de Símbolos</span><span>Acciones SDT</span><span>Pila Semántica</span>
   </div>
-
-  <div class="card" style="--ci:8">
-    <div class="card-title">📌 1.7 Manejo de Errores</div>
-
-    <div class="code-box error">
-      y = 10;  // Error si no fue declarada
-    </div>
-
-    <ul class="unit-list">
-      <li>Variable no declarada</li>
-      <li>Tipos incompatibles</li>
-      <li>Asignaciones inválidas</li>
-    </ul>
-  </div>
-
-  <div class="card highlight" style="--ci:9">
-    <div class="card-title">🧠 Conclusión</div>
-    <p>
-      El análisis semántico valida la coherencia lógica del programa antes
-      de su ejecución. Gracias a estructuras como árboles de expresión,
-      tablas de símbolos y pilas semánticas, el compilador puede detectar
-      errores y preparar el código para su traducción a lenguaje máquina.
-    </p>
-  </div>
+</div>
 
 </div>
