@@ -10,8 +10,12 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Caveat:wght@600;700&display=swap" rel="stylesheet">
 
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
   <!-- Estilos globales -->
   <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/styles-juego.css">
 </head>
 <body>
 
@@ -19,9 +23,24 @@
 <div id="particles"></div>
 
 <!-- ══════════════════════════════════
+     NAVBAR MÓVIL (solo visible <768px)
+══════════════════════════════════ -->
+<header class="mobile-navbar">
+  <div class="mobile-logo">Portafolio</div>
+  <button class="hamburger" id="hamburger" aria-label="Menú" onclick="toggleSidebar()">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+</header>
+
+<!-- Overlay oscuro al abrir sidebar en móvil -->
+<div class="sidebar-overlay" id="sidebar-overlay" onclick="toggleSidebar()"></div>
+
+<!-- ══════════════════════════════════
      SIDEBAR
 ══════════════════════════════════ -->
-<nav class="sidebar">
+<nav class="sidebar" id="sidebar">
   <div class="sidebar-logo">Portafolio</div>
 
   <!-- Avatar SVG ilustrado -->
@@ -33,17 +52,12 @@
       <ellipse cx="36" cy="22" rx="14" ry="10" fill="#3d1f0a"/>
       <ellipse cx="25.5" cy="30" rx="4.5" ry="10.5" fill="#3d1f0a"/>
       <ellipse cx="46.5" cy="30" rx="4.5" ry="10.5" fill="#3d1f0a"/>
-      <!-- Ojo guiñado -->
       <path d="M29.5 29 Q33 25 36 29" stroke="#2d2d2d" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-      <!-- Ojo abierto -->
       <ellipse cx="41.5" cy="28.5" rx="5.5" ry="6" fill="#2d2d2d"/>
       <ellipse cx="43" cy="27"   rx="1.8" ry="1.8" fill="white"/>
-      <!-- Rubor -->
       <ellipse cx="27" cy="34" rx="5" ry="2.8" fill="rgba(240,150,150,.3)"/>
       <ellipse cx="45" cy="34" rx="5" ry="2.8" fill="rgba(240,150,150,.3)"/>
-      <!-- Sonrisa -->
       <path d="M29 38 Q36 44 43 38" stroke="#c04060" stroke-width="2" fill="none" stroke-linecap="round"/>
-      <!-- Aretes -->
       <circle cx="21" cy="36" r="3.5" fill="#f7c842" stroke="#daa520" stroke-width="1"/>
       <circle cx="51" cy="36" r="3.5" fill="#f7c842" stroke="#daa520" stroke-width="1"/>
     </svg>
@@ -56,38 +70,19 @@
 
     <a class="nav-item" style="--ni:0" data-tab="contacto"
        href="#" onclick="switchTab('contacto', this); return false;">
-      <span class="nav-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M22 16.92v3a2 2 0 0 1-2.18 2A19.79 19.79 0 0 1 11.82 19a19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 3.09 4.18 2 2 0 0 1 5.07 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L9.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>
-        </svg>
-      </span>
+      <span class="nav-icon"><i class="fa-solid fa-phone"></i></span>
       <span class="nav-label">Contacto</span>
     </a>
 
     <a class="nav-item" style="--ni:1" data-tab="horario"
        href="#" onclick="switchTab('horario', this); return false;">
-      <span class="nav-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-          <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
-          <line x1="16" y1="2" x2="16" y2="6"/>
-          <line x1="8"  y1="2" x2="8"  y2="6"/>
-          <line x1="3"  y1="10" x2="21" y2="10"/>
-        </svg>
-      </span>
+      <span class="nav-icon"><i class="fa-solid fa-calendar-days"></i></span>
       <span class="nav-label">Horario</span>
     </a>
 
     <a class="nav-item active" style="--ni:2" data-tab="unidades"
        href="#" onclick="switchTab('unidades', this); toggleSub(); return false;">
-      <span class="nav-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-          <polyline points="14 2 14 8 20 8"/>
-          <line x1="16" y1="13" x2="8" y2="13"/>
-          <line x1="16" y1="17" x2="8" y2="17"/>
-          <polyline points="10 9 9 9 8 9"/>
-        </svg>
-      </span>
+      <span class="nav-icon"><i class="fa-solid fa-book"></i></span>
       <span class="nav-label">Unidades</span>
     </a>
 
@@ -97,6 +92,13 @@
       <a href="#" onclick="switchTab('unidad3', null); return false;">› Unidad 3</a>
       <a href="#" onclick="switchTab('unidad4', null); return false;">› Unidad 4</a>
     </div>
+
+    <!-- 🎮 Juego -->
+    <a class="nav-item" style="--ni:3" data-tab="juego"
+       href="#" onclick="switchTab('juego', this); return false;">
+      <span class="nav-icon"><i class="fa-solid fa-dice"></i></span>
+      <span class="nav-label">Juego</span>
+    </a>
 
   </nav>
 </nav>
@@ -108,20 +110,14 @@
 
   <div class="panels" id="panels">
 
-    <!-- Panel Contacto -->
     <div class="panel" id="panel-contacto"></div>
-
-    <!-- Panel Horario -->
     <div class="panel" id="panel-horario"></div>
-
-    <!-- Panel Unidades (temario) -->
     <div class="panel active anim-in" id="panel-unidades"></div>
-
-    <!-- Paneles individuales por unidad -->
     <div class="panel" id="panel-unidad1"></div>
     <div class="panel" id="panel-unidad2"></div>
     <div class="panel" id="panel-unidad3"></div>
     <div class="panel" id="panel-unidad4"></div>
+    <div class="panel" id="panel-juego"></div>
 
   </div>
 </main>
@@ -153,6 +149,23 @@
 })();
 
 /* ─────────────────────────────────────
+   Sidebar móvil (toggle hamburguesa)
+───────────────────────────────────── */
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('sidebar-overlay').classList.toggle('active');
+  document.getElementById('hamburger').classList.toggle('open');
+}
+
+function closeSidebarMobile() {
+  if (window.innerWidth <= 768) {
+    document.getElementById('sidebar').classList.remove('open');
+    document.getElementById('sidebar-overlay').classList.remove('active');
+    document.getElementById('hamburger').classList.remove('open');
+  }
+}
+
+/* ─────────────────────────────────────
    Carga de páginas (fetch)
 ───────────────────────────────────── */
 const pageCache = {};
@@ -167,7 +180,7 @@ async function loadPage(tabId) {
     return html;
   } catch (e) {
     console.warn(e);
-    return `<p style="color:var(--pink-dark);padding:20px;">No se pudo cargar el contenido de <strong>${tabId}</strong>.</p>`;
+    return `<p style="color:#d14d72;padding:20px;">No se pudo cargar el contenido de <strong>${tabId}</strong>.</p>`;
   }
 }
 
@@ -177,21 +190,32 @@ async function loadPage(tabId) {
 let currentTab = 'unidades';
 
 async function switchTab(id, navEl) {
-  if (id === currentTab) return;
-
-  // Cargar contenido si aún no está en el DOM
-  const panel = document.getElementById('panel-' + id);
-  if (panel && panel.innerHTML.trim() === '') {
-    panel.innerHTML = '<p style="padding:20px;color:var(--pink-main)">Cargando…</p>';
-    const html = await loadPage(id);
-    panel.innerHTML = html;
+  if (id === currentTab) {
+    closeSidebarMobile();
+    return;
   }
 
-  // Ocultar panel actual
+  const panel = document.getElementById('panel-' + id);
+  if (panel && panel.innerHTML.trim() === '') {
+    panel.innerHTML = '<p style="padding:20px;color:#e85a71">Cargando…</p>';
+    const html = await loadPage(id);
+    panel.innerHTML = html;
+
+    // Ejecutar scripts internos de la página cargada
+    panel.querySelectorAll('script').forEach(oldScript => {
+      const newScript = document.createElement('script');
+      if (oldScript.src) {
+        newScript.src = oldScript.src;
+      } else {
+        newScript.textContent = oldScript.textContent;
+      }
+      oldScript.parentNode.replaceChild(newScript, oldScript);
+    });
+  }
+
   const oldPanel = document.getElementById('panel-' + currentTab);
   if (oldPanel) oldPanel.classList.remove('active', 'anim-in');
 
-  // Mostrar nuevo panel
   if (panel) {
     panel.classList.add('active');
     void panel.offsetWidth;
@@ -200,31 +224,23 @@ async function switchTab(id, navEl) {
 
   currentTab = id;
 
-  // Actualizar sidebar nav-items
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
   const mainTab = ['unidad1','unidad2','unidad3','unidad4'].includes(id) ? 'unidades' : id;
   const activeNav = navEl || document.querySelector(`.nav-item[data-tab="${mainTab}"]`);
   if (activeNav) activeNav.classList.add('active');
 
-  // Abrir sub-menú si se navega a una unidad
   if (['unidades','unidad1','unidad2','unidad3','unidad4'].includes(id)) {
     document.getElementById('nav-sub').classList.add('open');
   }
 
-  // Confetti
   spawnConfetti(activeNav);
+  closeSidebarMobile();
 }
 
-/* ─────────────────────────────────────
-   Sub-menú Unidades
-───────────────────────────────────── */
 function toggleSub() {
   document.getElementById('nav-sub').classList.toggle('open');
 }
 
-/* ─────────────────────────────────────
-   Confetti al cambiar pestaña
-───────────────────────────────────── */
 function spawnConfetti(origin) {
   const colors = ['#e87a96', '#f5b8c8', '#c8a9e0', '#f7c842', '#7ec879', '#93c4f0'];
   const rect = origin ? origin.getBoundingClientRect() : { left: window.innerWidth / 2, top: 100 };
@@ -251,9 +267,6 @@ function spawnConfetti(origin) {
   }
 }
 
-/* ─────────────────────────────────────
-   Cargar el panel Unidades al arrancar
-───────────────────────────────────── */
 window.addEventListener('DOMContentLoaded', async () => {
   const panel = document.getElementById('panel-unidades');
   const html = await loadPage('unidades');

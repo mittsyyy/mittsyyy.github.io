@@ -1,0 +1,642 @@
+<div class="juego-wrapper">
+
+  <h1 class="juego-titulo"><i class="fa-solid fa-dice"></i> Serpientes & Escaleras</h1>
+  <p class="juego-subtitulo">Repasa Lenguajes y Autómatas II — responde para avanzar</p>
+
+  <div class="juego-layout">
+
+    <!-- ══════ TABLERO ══════ -->
+    <div class="tablero">
+      <div class="tablero-grid" id="tablero-grid"></div>
+    </div>
+
+    <!-- ══════ PANEL LATERAL ══════ -->
+    <div class="panel-juego">
+
+      <div class="estado-juego">
+        <div class="casilla-actual" id="casilla-actual">1</div>
+        <div class="casilla-label">Casilla actual</div>
+      </div>
+
+      <div class="dado-container">
+        <div class="dado" id="dado"><i class="fa-solid fa-question"></i></div>
+        <button class="btn-juego" id="btn-tirar" onclick="tirarDado()">
+          <i class="fa-solid fa-dice"></i> Tirar dado
+        </button>
+      </div>
+
+      <div class="leyenda">
+        <h4>Leyenda</h4>
+        <div class="leyenda-item">
+          <div class="leyenda-swatch" style="background:#fff59d"></div>
+          <span>Inicio</span>
+        </div>
+        <div class="leyenda-item">
+          <div class="leyenda-swatch" style="background:#c8e6c9"></div>
+          <span><i class="fa-solid fa-stairs" style="color:#2e7d32"></i> Escalera (sube)</span>
+        </div>
+        <div class="leyenda-item">
+          <div class="leyenda-swatch" style="background:#ffccbc"></div>
+          <span><i class="fa-solid fa-staff-snake" style="color:#c62828"></i> Serpiente (baja)</span>
+        </div>
+        <div class="leyenda-item">
+          <div class="leyenda-swatch" style="background:linear-gradient(135deg,#ffd54f,#ff8a65)"></div>
+          <span><i class="fa-solid fa-trophy" style="color:#d4a017"></i> Meta (64)</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ══════ MODAL DE PREGUNTA ══════ -->
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal" id="modal-contenido">
+    <!-- Contenido inyectado por JS -->
+  </div>
+</div>
+
+<script>
+(function() {
+  // ════════════════════════════════════════
+  // CONFIGURACIÓN DEL TABLERO
+  // ════════════════════════════════════════
+  const TOTAL_CASILLAS = 64;
+
+  // Escaleras: { desde: hasta }
+  const ESCALERAS = {
+    4: 14,
+    9: 21,
+    20: 38,
+    28: 47,
+    40: 59,
+    51: 62
+  };
+
+  // Serpientes: { desde: hasta }
+  const SERPIENTES = {
+    17: 7,
+    32: 11,
+    43: 23,
+    49: 30,
+    56: 36,
+    63: 45
+  };
+
+  // ════════════════════════════════════════
+  // BANCO DE PREGUNTAS — LENGUAJES Y AUTÓMATAS II
+  // ════════════════════════════════════════
+  const PREGUNTAS = [
+    {
+      tema: "Gramáticas",
+      pregunta: "¿Qué tipo de gramática genera lenguajes libres de contexto?",
+      opciones: ["Tipo 0 (irrestricta)", "Tipo 1 (sensible al contexto)", "Tipo 2 (libre de contexto)", "Tipo 3 (regular)"],
+      correcta: 2,
+      explicacion: "Según la jerarquía de Chomsky, las gramáticas Tipo 2 generan los lenguajes libres de contexto."
+    },
+    {
+      tema: "Chomsky",
+      pregunta: "¿Cuál es el orden correcto de la jerarquía de Chomsky de mayor a menor poder expresivo?",
+      opciones: ["Regular → LC → Sensible → Irrestricta", "Irrestricta → Sensible → LC → Regular", "LC → Regular → Sensible → Irrestricta", "Sensible → LC → Regular → Irrestricta"],
+      correcta: 1,
+      explicacion: "Tipo 0 (Irrestricta) > Tipo 1 (Sensible al contexto) > Tipo 2 (LC) > Tipo 3 (Regular)."
+    },
+    {
+      tema: "Gramáticas",
+      pregunta: "En una gramática libre de contexto, las producciones tienen la forma:",
+      opciones: ["A → α, donde A es un no terminal y α una cadena de terminales y/o no terminales", "αAβ → αγβ", "A → aB o A → a", "α → β donde |α| ≤ |β|"],
+      correcta: 0,
+      explicacion: "En una GLC el lado izquierdo es un único no terminal."
+    },
+    {
+      tema: "Forma Normal",
+      pregunta: "¿Qué forma tienen las producciones en la Forma Normal de Chomsky (FNC)?",
+      opciones: ["A → aB o A → a", "A → BC o A → a", "A → α (cualquier cosa)", "A → ε"],
+      correcta: 1,
+      explicacion: "En FNC las producciones son A → BC (dos no terminales) o A → a (un terminal)."
+    },
+    {
+      tema: "Forma Normal",
+      pregunta: "¿Qué forma tienen las producciones en la Forma Normal de Greibach (FNG)?",
+      opciones: ["A → BC", "A → aα (un terminal seguido de cero o más no terminales)", "A → ε", "A → αBβ"],
+      correcta: 1,
+      explicacion: "En FNG cada producción comienza con un terminal seguido de no terminales."
+    },
+    {
+      tema: "Autómatas a Pila",
+      pregunta: "¿Qué tipo de autómata reconoce los lenguajes libres de contexto?",
+      opciones: ["Autómata finito determinista (AFD)", "Autómata finito no determinista (AFN)", "Autómata a pila (PDA)", "Máquina de Turing"],
+      correcta: 2,
+      explicacion: "Los autómatas a pila (PDA) son equivalentes en poder a las gramáticas libres de contexto."
+    },
+    {
+      tema: "Autómatas a Pila",
+      pregunta: "¿Cuántas pilas usa un autómata a pila estándar (PDA)?",
+      opciones: ["Cero", "Una", "Dos", "Tres"],
+      correcta: 1,
+      explicacion: "Un PDA estándar usa una sola pila como memoria auxiliar."
+    },
+    {
+      tema: "Autómatas a Pila",
+      pregunta: "¿Qué operaciones puede realizar un PDA sobre su pila?",
+      opciones: ["Solo push", "Solo pop", "Push y pop", "Búsqueda aleatoria"],
+      correcta: 2,
+      explicacion: "Un PDA puede apilar (push) y desapilar (pop) símbolos según las transiciones."
+    },
+    {
+      tema: "Autómatas a Pila",
+      pregunta: "Un PDA puede aceptar una cadena por:",
+      opciones: ["Estado final únicamente", "Pila vacía únicamente", "Estado final o pila vacía", "Número de transiciones"],
+      correcta: 2,
+      explicacion: "Un PDA puede aceptar por estado final o por pila vacía; ambos criterios son equivalentes en poder."
+    },
+    {
+      tema: "Máquina de Turing",
+      pregunta: "¿Qué tipo de lenguajes reconoce una máquina de Turing?",
+      opciones: ["Regulares", "Libres de contexto", "Sensibles al contexto", "Recursivamente enumerables"],
+      correcta: 3,
+      explicacion: "Las MT reconocen los lenguajes recursivamente enumerables (Tipo 0)."
+    },
+    {
+      tema: "Máquina de Turing",
+      pregunta: "¿En cuántas direcciones puede moverse el cabezal de una MT estándar?",
+      opciones: ["Solo izquierda", "Solo derecha", "Izquierda y derecha", "En cualquier dirección"],
+      correcta: 2,
+      explicacion: "El cabezal de una MT estándar se mueve a la izquierda (L) o a la derecha (R)."
+    },
+    {
+      tema: "Máquina de Turing",
+      pregunta: "¿Qué diferencia hay entre un lenguaje recursivo y uno recursivamente enumerable?",
+      opciones: ["No hay diferencia", "Un lenguaje recursivo siempre se decide (la MT se detiene); el RE puede no detenerse", "Los recursivos son más grandes", "Los RE son regulares"],
+      correcta: 1,
+      explicacion: "Una MT que decide un lenguaje recursivo siempre se detiene; en un RE puede entrar en bucle infinito en rechazos."
+    },
+    {
+      tema: "Parsing",
+      pregunta: "Un analizador sintáctico LL(1) realiza un análisis:",
+      opciones: ["Ascendente (bottom-up)", "Descendente (top-down) con 1 símbolo de anticipación", "Aleatorio", "Por niveles"],
+      correcta: 1,
+      explicacion: "LL(1): Left-to-right, Leftmost derivation, 1 símbolo de anticipación (top-down)."
+    },
+    {
+      tema: "Parsing",
+      pregunta: "¿Qué algoritmo de parsing es bottom-up (ascendente)?",
+      opciones: ["LL(1)", "Descenso recursivo", "LR(1)", "Predictivo"],
+      correcta: 2,
+      explicacion: "LR(1) construye el árbol desde las hojas hacia la raíz (ascendente)."
+    },
+    {
+      tema: "Parsing",
+      pregunta: "¿Qué representa el conjunto FIRST(α) en análisis sintáctico?",
+      opciones: ["Símbolos que pueden seguir a α", "Terminales con los que puede comenzar una cadena derivada de α", "El primer no terminal de la gramática", "El símbolo inicial"],
+      correcta: 1,
+      explicacion: "FIRST(α) son los terminales con los que pueden comenzar las cadenas derivables desde α."
+    },
+    {
+      tema: "Parsing",
+      pregunta: "¿Qué representa el conjunto FOLLOW(A)?",
+      opciones: ["Terminales que pueden aparecer inmediatamente después de A en alguna forma sentencial", "Producciones de A", "El primer terminal de A", "Los no terminales"],
+      correcta: 0,
+      explicacion: "FOLLOW(A) contiene los terminales que pueden aparecer justo después de A en una derivación."
+    },
+    {
+      tema: "Parsing",
+      pregunta: "Una gramática es LL(1) si:",
+      opciones: ["Es ambigua", "Para cada no terminal con varias producciones, sus FIRST son disjuntos (y FOLLOW si hay ε)", "Tiene recursión por izquierda", "Genera lenguajes regulares"],
+      correcta: 1,
+      explicacion: "Sin conflictos en la tabla LL(1): FIRST disjuntos entre alternativas, más condiciones con ε."
+    },
+    {
+      tema: "Parsing",
+      pregunta: "¿Por qué se elimina la recursión por la izquierda en LL(1)?",
+      opciones: ["Por estilo", "Porque genera bucles infinitos en parsers top-down", "Porque ocupa más memoria", "Por compatibilidad con LR"],
+      correcta: 1,
+      explicacion: "Un parser descendente entraría en recursión infinita expandiendo A → Aα."
+    },
+    {
+      tema: "Ambigüedad",
+      pregunta: "Una gramática es ambigua si:",
+      opciones: ["Tiene muchas reglas", "Existe al menos una cadena con dos árboles de derivación distintos", "Tiene recursión", "Es regular"],
+      correcta: 1,
+      explicacion: "Ambigüedad: una misma cadena admite más de un árbol sintáctico."
+    },
+    {
+      tema: "Ambigüedad",
+      pregunta: "¿Es decidible determinar si una gramática libre de contexto es ambigua?",
+      opciones: ["Sí, siempre", "No, es un problema indecidible en general", "Solo si es regular", "Solo en FNC"],
+      correcta: 1,
+      explicacion: "El problema de ambigüedad de las GLC es indecidible en el caso general."
+    },
+    {
+      tema: "Compiladores",
+      pregunta: "¿Cuál es el orden correcto de las fases de un compilador?",
+      opciones: ["Léxico → Sintáctico → Semántico → Generación de código", "Sintáctico → Léxico → Semántico → Código", "Semántico → Léxico → Sintáctico → Código", "Código → Léxico → Sintáctico → Semántico"],
+      correcta: 0,
+      explicacion: "Front-end: análisis léxico → sintáctico → semántico. Luego: intermedio, optimización y código."
+    },
+    {
+      tema: "Compiladores",
+      pregunta: "El análisis léxico se encarga de:",
+      opciones: ["Verificar tipos", "Convertir el código fuente en tokens", "Construir el árbol sintáctico", "Generar código objeto"],
+      correcta: 1,
+      explicacion: "El lexer/scanner reconoce tokens (identificadores, palabras reservadas, números, etc)."
+    },
+    {
+      tema: "Compiladores",
+      pregunta: "¿Qué herramienta clásica genera analizadores léxicos?",
+      opciones: ["Yacc/Bison", "Lex/Flex", "GCC", "Make"],
+      correcta: 1,
+      explicacion: "Lex (y su versión moderna Flex) genera analizadores léxicos a partir de expresiones regulares."
+    },
+    {
+      tema: "Compiladores",
+      pregunta: "¿Qué herramienta clásica genera analizadores sintácticos?",
+      opciones: ["Lex/Flex", "Yacc/Bison", "Awk", "Sed"],
+      correcta: 1,
+      explicacion: "Yacc (y Bison) genera parsers LALR(1) a partir de una gramática."
+    },
+    {
+      tema: "Compiladores",
+      pregunta: "El análisis semántico verifica principalmente:",
+      opciones: ["Errores ortográficos", "Estructura de paréntesis", "Tipos, declaraciones y reglas del lenguaje no expresables por la gramática", "Velocidad de ejecución"],
+      correcta: 2,
+      explicacion: "El análisis semántico chequea tipos, ámbitos, declaración previa de variables, etc."
+    },
+    {
+      tema: "Pumping Lemma",
+      pregunta: "¿Para qué se usa el lema de bombeo (pumping lemma) en lenguajes libres de contexto?",
+      opciones: ["Para construir parsers", "Para demostrar que un lenguaje NO es libre de contexto", "Para minimizar autómatas", "Para generar tokens"],
+      correcta: 1,
+      explicacion: "El pumping lemma para LC se usa por contradicción para probar que un lenguaje no es libre de contexto."
+    },
+    {
+      tema: "Pumping Lemma",
+      pregunta: "El lenguaje L = { aⁿbⁿcⁿ | n ≥ 0 } es:",
+      opciones: ["Regular", "Libre de contexto", "Sensible al contexto pero NO libre de contexto", "Vacío"],
+      correcta: 2,
+      explicacion: "aⁿbⁿcⁿ no es LC (se prueba con pumping lemma) pero sí es sensible al contexto."
+    },
+    {
+      tema: "Conceptos",
+      pregunta: "¿Qué es un símbolo terminal en una gramática?",
+      opciones: ["Una variable auxiliar", "Un símbolo del alfabeto que aparece en las cadenas finales", "El símbolo inicial", "Una producción"],
+      correcta: 1,
+      explicacion: "Los terminales son los símbolos finales que componen las cadenas del lenguaje."
+    },
+    {
+      tema: "Conceptos",
+      pregunta: "¿Qué es una derivación por la izquierda?",
+      opciones: ["Reemplazar el no terminal más a la derecha en cada paso", "Reemplazar el no terminal más a la izquierda en cada paso", "Borrar terminales", "Aplicar producciones al azar"],
+      correcta: 1,
+      explicacion: "En una derivación leftmost siempre se expande el no terminal más a la izquierda."
+    },
+    {
+      tema: "Conceptos",
+      pregunta: "El lenguaje L = { aⁿbⁿ | n ≥ 0 } es:",
+      opciones: ["Regular", "Libre de contexto pero NO regular", "No libre de contexto", "Finito"],
+      correcta: 1,
+      explicacion: "aⁿbⁿ no es regular (los AF no pueden contar n), pero sí es LC (lo reconoce un PDA)."
+    }
+  ];
+
+  // ════════════════════════════════════════
+  // ESTADO DEL JUEGO
+  // ════════════════════════════════════════
+  let posicion = 1;
+  let preguntasUsadas = [];
+  let preguntasRespondidas = 0;
+  let preguntasCorrectas = 0;
+  let inicioTiempo = Date.now();
+
+  // Iconos de cara del dado (Font Awesome)
+  const ICONOS_DADO = {
+    1: 'fa-dice-one',
+    2: 'fa-dice-two',
+    3: 'fa-dice-three',
+    4: 'fa-dice-four',
+    5: 'fa-dice-five',
+    6: 'fa-dice-six'
+  };
+
+  // ════════════════════════════════════════
+  // CONSTRUIR TABLERO
+  // ════════════════════════════════════════
+  function construirTablero() {
+    const grid = document.getElementById('tablero-grid');
+    grid.innerHTML = '';
+
+    // Construir de la fila 8 (arriba) a la fila 1 (abajo)
+    // Recorrido en serpentín: fila 1 izquierda→derecha, fila 2 derecha→izquierda, etc.
+    for (let fila = 8; fila >= 1; fila--) {
+      const numerosFila = [];
+      for (let col = 1; col <= 8; col++) {
+        let num;
+        if (fila % 2 === 1) {
+          num = (fila - 1) * 8 + col;
+        } else {
+          num = (fila - 1) * 8 + (9 - col);
+        }
+        numerosFila.push(num);
+      }
+
+      numerosFila.forEach(num => {
+        const casilla = document.createElement('div');
+        casilla.className = 'casilla';
+        casilla.id = 'casilla-' + num;
+
+        if (num === 1) casilla.classList.add('inicio');
+        if (num === TOTAL_CASILLAS) casilla.classList.add('meta');
+        if (ESCALERAS[num]) casilla.classList.add('escalera');
+        if (SERPIENTES[num]) casilla.classList.add('serpiente');
+
+        let contenido = `<span>${num}</span>`;
+        if (ESCALERAS[num]) {
+          contenido += `<span class="casilla-icono"><i class="fa-solid fa-stairs"></i></span>`;
+        }
+        if (SERPIENTES[num]) {
+          contenido += `<span class="casilla-icono"><i class="fa-solid fa-staff-snake"></i></span>`;
+        }
+        if (num === TOTAL_CASILLAS) {
+          contenido = `<span><i class="fa-solid fa-trophy"></i> ${num}</span>`;
+        }
+
+        casilla.innerHTML = contenido;
+        grid.appendChild(casilla);
+      });
+    }
+
+    actualizarFicha();
+  }
+
+  // ════════════════════════════════════════
+  // FICHA
+  // ════════════════════════════════════════
+  function actualizarFicha() {
+    document.querySelectorAll('.casilla .ficha').forEach(f => f.remove());
+    const casilla = document.getElementById('casilla-' + posicion);
+    if (casilla) {
+      const ficha = document.createElement('div');
+      ficha.className = 'ficha';
+      casilla.appendChild(ficha);
+    }
+    document.getElementById('casilla-actual').textContent = posicion;
+  }
+
+  // ════════════════════════════════════════
+  // TIRAR DADO
+  // ════════════════════════════════════════
+  window.tirarDado = function() {
+    const dado = document.getElementById('dado');
+    const btn = document.getElementById('btn-tirar');
+    btn.disabled = true;
+
+    dado.classList.add('rodando');
+    const valor = Math.floor(Math.random() * 6) + 1;
+
+    let contador = 0;
+    const intervalo = setInterval(() => {
+      const r = Math.floor(Math.random() * 6) + 1;
+      dado.innerHTML = `<i class="fa-solid ${ICONOS_DADO[r]}"></i>`;
+      contador++;
+      if (contador >= 8) {
+        clearInterval(intervalo);
+        dado.innerHTML = `<i class="fa-solid ${ICONOS_DADO[valor]}"></i>`;
+        dado.classList.remove('rodando');
+        // Tras tirar, mostrar pregunta
+        setTimeout(() => mostrarPregunta(valor), 400);
+      }
+    }, 70);
+  };
+
+  // ════════════════════════════════════════
+  // OBTENER PREGUNTA
+  // ════════════════════════════════════════
+  function obtenerPregunta() {
+    if (preguntasUsadas.length >= PREGUNTAS.length) {
+      preguntasUsadas = [];
+    }
+    let idx;
+    do {
+      idx = Math.floor(Math.random() * PREGUNTAS.length);
+    } while (preguntasUsadas.includes(idx));
+    preguntasUsadas.push(idx);
+    return { ...PREGUNTAS[idx], idx };
+  }
+
+  // ════════════════════════════════════════
+  // MOSTRAR PREGUNTA
+  // ════════════════════════════════════════
+  function mostrarPregunta(pasos) {
+    const pregunta = obtenerPregunta();
+    const modal = document.getElementById('modal-overlay');
+    const contenido = document.getElementById('modal-contenido');
+
+    contenido.innerHTML = `
+      <div class="modal-tema">${pregunta.tema}</div>
+      <h2 class="modal-titulo">
+        <i class="fa-solid fa-bullseye"></i>
+        Avanzas ${pasos} casilla${pasos > 1 ? 's' : ''} si aciertas
+      </h2>
+      <p class="modal-pregunta">${pregunta.pregunta}</p>
+      <div class="opciones" id="opciones-container">
+        ${pregunta.opciones.map((op, i) => `
+          <button class="opcion" data-idx="${i}">${String.fromCharCode(65 + i)}. ${op}</button>
+        `).join('')}
+      </div>
+      <div class="modal-feedback" id="modal-feedback"></div>
+    `;
+
+    modal.classList.add('active');
+
+    contenido.querySelectorAll('.opcion').forEach(btn => {
+      btn.addEventListener('click', () => responder(parseInt(btn.dataset.idx), pregunta, pasos));
+    });
+  }
+
+  // ════════════════════════════════════════
+  // RESPONDER
+  // ════════════════════════════════════════
+  function responder(elegida, pregunta, pasos) {
+    const opciones = document.querySelectorAll('.opcion');
+    opciones.forEach(o => o.disabled = true);
+    opciones[elegida].classList.add(elegida === pregunta.correcta ? 'correcta' : 'incorrecta');
+
+    if (elegida !== pregunta.correcta) {
+      opciones[pregunta.correcta].classList.add('correcta');
+    }
+
+    const feedback = document.getElementById('modal-feedback');
+    feedback.classList.add('show');
+    preguntasRespondidas++;
+
+    if (elegida === pregunta.correcta) {
+      preguntasCorrectas++;
+      feedback.classList.add('ok');
+      feedback.innerHTML = `
+        <strong><i class="fa-solid fa-circle-check"></i> ¡Correcto!</strong>
+        ${pregunta.explicacion}
+      `;
+      // Avanzar después de un momento
+      setTimeout(() => avanzar(pasos), 1800);
+    } else {
+      feedback.classList.add('error');
+      feedback.innerHTML = `
+        <strong><i class="fa-solid fa-circle-xmark"></i> Incorrecto — te quedas en tu lugar</strong>
+        ${pregunta.explicacion}
+      `;
+      // Solo cerrar modal y reactivar el dado. NO reiniciar el juego.
+      setTimeout(() => {
+        cerrarModal();
+        document.getElementById('btn-tirar').disabled = false;
+      }, 2500);
+    }
+  }
+
+  // ════════════════════════════════════════
+  // AVANZAR
+  // ════════════════════════════════════════
+  function avanzar(pasos) {
+    cerrarModal();
+    let destino = posicion + pasos;
+
+    // Necesita número exacto para llegar a 64 (regla clásica)
+    if (destino > TOTAL_CASILLAS) {
+      mostrarMensaje('Necesitas un número exacto para llegar a 64');
+      return;
+    }
+
+    animarMovimiento(posicion, destino, () => {
+      posicion = destino;
+      actualizarFicha();
+      verificarEscaleraOSerpiente();
+    });
+  }
+
+  function animarMovimiento(inicio, fin, callback) {
+    let actual = inicio;
+    const intervalo = setInterval(() => {
+      actual++;
+      posicion = actual;
+      actualizarFicha();
+      if (actual >= fin) {
+        clearInterval(intervalo);
+        callback();
+      }
+    }, 220);
+  }
+
+  function verificarEscaleraOSerpiente() {
+    if (ESCALERAS[posicion]) {
+      const destino = ESCALERAS[posicion];
+      setTimeout(() => {
+        mostrarMensaje(`<i class="fa-solid fa-stairs" style="color:#2e7d32"></i> ¡Escalera! Subes a la ${destino}`);
+        posicion = destino;
+        actualizarFicha();
+        setTimeout(verificarFinal, 1500);
+      }, 500);
+    } else if (SERPIENTES[posicion]) {
+      const destino = SERPIENTES[posicion];
+      setTimeout(() => {
+        mostrarMensaje(`<i class="fa-solid fa-staff-snake" style="color:#c62828"></i> ¡Serpiente! Bajas a la ${destino}`);
+        posicion = destino;
+        actualizarFicha();
+        setTimeout(verificarFinal, 1500);
+      }, 500);
+    } else {
+      verificarFinal();
+    }
+  }
+
+  function verificarFinal() {
+    if (posicion >= TOTAL_CASILLAS) {
+      mostrarVictoria();
+    } else {
+      document.getElementById('btn-tirar').disabled = false;
+    }
+  }
+
+  // ════════════════════════════════════════
+  // CERRAR MODAL
+  // ════════════════════════════════════════
+  function cerrarModal() {
+    document.getElementById('modal-overlay').classList.remove('active');
+  }
+
+  // ════════════════════════════════════════
+  // MENSAJES
+  // ════════════════════════════════════════
+  function mostrarMensaje(texto) {
+    const modal = document.getElementById('modal-overlay');
+    const contenido = document.getElementById('modal-contenido');
+    contenido.innerHTML = `
+      <h2 class="modal-titulo" style="text-align:center;">${texto}</h2>
+    `;
+    modal.classList.add('active');
+    setTimeout(() => {
+      cerrarModal();
+      document.getElementById('btn-tirar').disabled = false;
+    }, 1400);
+  }
+
+  // ════════════════════════════════════════
+  // VICTORIA
+  // ════════════════════════════════════════
+  function mostrarVictoria() {
+    const tiempo = Math.floor((Date.now() - inicioTiempo) / 1000);
+    const min = Math.floor(tiempo / 60);
+    const seg = tiempo % 60;
+    const tiempoStr = `${min}:${seg.toString().padStart(2, '0')}`;
+    const aciertos = preguntasRespondidas > 0
+      ? Math.round((preguntasCorrectas / preguntasRespondidas) * 100)
+      : 0;
+
+    const modal = document.getElementById('modal-overlay');
+    const contenido = document.getElementById('modal-contenido');
+    contenido.innerHTML = `
+      <div class="victoria">
+        <div class="victoria-icono"><i class="fa-solid fa-trophy"></i></div>
+        <h2 class="victoria-titulo">¡Ganaste!</h2>
+        <p style="color:#666;font-weight:600;">Llegaste a la casilla 64 dominando autómatas y lenguajes</p>
+        <div class="victoria-stats">
+          <div class="stat-box">
+            <div class="stat-num">${preguntasCorrectas}/${preguntasRespondidas}</div>
+            <div class="stat-label">Aciertos</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-num">${aciertos}%</div>
+            <div class="stat-label">Precisión</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-num">${tiempoStr}</div>
+            <div class="stat-label">Tiempo</div>
+          </div>
+        </div>
+        <button class="btn-juego" onclick="reiniciarJuego()">
+          <i class="fa-solid fa-rotate-right"></i> Jugar otra vez
+        </button>
+      </div>
+    `;
+    modal.classList.add('active');
+  }
+
+  // ════════════════════════════════════════
+  // REINICIAR (solo después de ganar)
+  // ════════════════════════════════════════
+  window.reiniciarJuego = function() {
+    posicion = 1;
+    preguntasUsadas = [];
+    preguntasRespondidas = 0;
+    preguntasCorrectas = 0;
+    inicioTiempo = Date.now();
+    document.getElementById('dado').innerHTML = '<i class="fa-solid fa-question"></i>';
+    document.getElementById('btn-tirar').disabled = false;
+    cerrarModal();
+    actualizarFicha();
+  };
+
+  // ════════════════════════════════════════
+  // INICIO
+  // ════════════════════════════════════════
+  construirTablero();
+})();
+</script>
